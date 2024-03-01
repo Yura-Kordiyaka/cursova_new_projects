@@ -1,10 +1,52 @@
+{#{% load static %}#}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/static/authorization/form_authorization.css">
 </head>
 <body>
+<div class="main">
+    <h1>Вхід в систему</h1>
+    <h3>Введіть свої данні</h3>
+    <form action="{% url "login_user" %}" method="post">
+        {% csrf_token %}
+        <label for="username">
+            Username:
+        </label>
+        <input type="text"
+               id="username"
+               name="username"
+               placeholder="Enter your Username" required>
 
+        <label for="password">
+            Password:
+        </label>
+        <input type="password"
+               id="password"
+               name="password"
+               placeholder="Enter your Password" required>
+
+        <div class="wrap">
+            <button type="submit">
+                Submit
+            </button>
+        </div>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message }}
+            </li>
+        {% endfor %}
+    {% endif %}
+    <p>Not registered?
+        <a href="{% url "authorization" %}"
+           style="text-decoration: none;">
+            Create an account
+        </a>
+    </p>
+</div>
 </body>
 </html>

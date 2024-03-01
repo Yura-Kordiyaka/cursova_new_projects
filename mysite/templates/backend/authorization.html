@@ -3,8 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/static/authorization/form_authorization.css">
 </head>
 <body>
+<div class="main">
 
+    <h1>Вхід в систему</h1>
+    <h3>Введіть свої данні</h3>
+    <form action="{% url "authorization" %}" method="post">
+        {% csrf_token %}
+        <label for="first_name">
+            First name:
+        </label>
+        <input type="text"
+               id="first_name"
+               name="first_name"
+               placeholder="Enter your first name" required>
+        <label for="second_name">
+            Second name:
+        </label>
+        <input type="text"
+               id="second_name"
+               name="second_name"
+               placeholder="Enter your second name" required>
+        <label for="username">
+            Username:
+        </label>
+        <input type="text"
+               id="username"
+               name="username"
+               placeholder="Enter your Username" required>
+
+        <label for="password">
+            Password:
+        </label>
+        <input type="password"
+               id="password"
+               name="password"
+               placeholder="Enter your Password" required>
+
+        <div class="wrap">
+            <button type="submit">
+                Submit
+            </button>
+        </div>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message }}
+            </li>
+        {% endfor %}
+    {% endif %}
+</div>
 </body>
 </html>
