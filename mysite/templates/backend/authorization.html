@@ -7,9 +7,9 @@
 </head>
 <body>
 <div class="main">
-
-    <h1>Вхід в систему</h1>
-    <h3>Введіть свої данні</h3>
+{##}
+{#    <h1>Вхід в систему</h1>#}
+{#    <h3>Введіть свої данні</h3>#}
     <form action="{% url "authorization" %}" method="post">
         {% csrf_token %}
         <label for="first_name">
@@ -23,9 +23,18 @@
             Second name:
         </label>
         <input type="text"
-               id="second_name"
-               name="second_name"
-               placeholder="Enter your second name" required>
+               id="last_name"
+               name="last_name"
+               placeholder="Enter your last name" required>
+        <label for="email">
+            Email
+        </label>
+        <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email" required
+        >
         <label for="username">
             Username:
         </label>

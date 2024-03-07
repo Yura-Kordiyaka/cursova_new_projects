@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;;
+}
+
+ul {
+    list-style: none;
+    padding: 0 0;
+    margin: 0 0;
+}
+
+
+:root {
+    --accent-color: #2196F3;
+    --color-address-link: #757575;
+    --background-color: #2F303A;
+    --text-color-secondary: #212121;
+    --text-color-paragraph-grey: #757575;
+    --portfolio-button-color: #F5F4FA;
+}
+
+.logo {
+    color: #000000;
+    padding: 24px 93px 0 215px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+}
+
+.logo span {
+    color: var(--accent-color);
+}
+
+.header-link {
+    color: #000000;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.14;
+    letter-spacing: 0.02em;
+}
+
+.header-link {
+    height: 16px;
+}
+
+.current {
+    color: var(--accent-color);
+}
+
+.header-link:hover,
+.header-link:focus {
+    transition: 0.4s;
+    color: var(--accent-color);
+}
+
+.div-header-link .ul {
+    display: flex;
+}
+
+.div-logo-and-ref {
+    display: flex;
+}
+
+.header-general-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-address .ul {
+    display: flex;
+}
+
+.address-link {
+    color: var(--color-address-link);
+}
+
+.header li {
+    padding: 32px 50px 32px 0;
+}
+
+.footer {
+    background-color: var(--background-color);
+}
+
+.footer-logo {
+    color: #FFFFFF;
+    padding: 0 0;
+}
+
+.footer-link {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.71;
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.gmap {
+    color: #FFFFFF;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+    color: var(--accent-color);
+}
+
+.footer-elements {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 1170px;
+    margin: 0 auto;
+}
+
+.footer-links .ul {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}

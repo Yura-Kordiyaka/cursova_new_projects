@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'backend',
-    'user'
+    'user',
+    'shop'
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ TEMPLATES = [
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
+            'debug': True,
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -84,7 +86,7 @@ DATABASES = {
         "PORT": "3306",
     }
 }
-
+GOOGLE_API_KEY = "AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM"
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -113,8 +115,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-STATIC_URL = '/static-admin/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static-admin')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

@@ -2,11 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/main/style.css">
     <title>Title</title>
 </head>
 <body>
+ <header class="header">
+            <div class="container">
+                <div class="header-general-div">
+                    <nav>
+                        <div class="div-logo-and-ref">
+                            <a href="./index.html" class="logo"><span>My</span>Site</a>
+                            <div class="div-header-link">
+                                <ul class="ul">
+                                    <li class="header-link">
+                                        <a href="./index.html" class="header-link current">Студія</a>
+                                    </li>
+                                    <li class="header-link">
+                                        <a href="./portfolio.html"class="header-link">Портфоліо</a>
+                                    </li>
+                                    <li class="header-link">
+                                        <a href="#"class="header-link">Контакти</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                    <div class="header-address">
+                        <ul class="ul">
+                            <li>
+                                <a href="mailto:info@devstudio.com" class="header-link address-link">info@devstudio.com</a>
+                            </li>
+                            <li>
+                                <a href="tel:+380961111111" class="header-link address-link">+380961111111</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+ 
             {% block content %}
-                hello people
+              
+                
             {% endblock %}
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-elements">
+                    <a href="./index.html" class="logo footer-logo"><span>Web</span>Studio</a>
+                    <div class="footer-links">
+                        <address>
+                            <ul class="ul">
+                                <li>
+                                    <a href="https://goo.gl/maps/CPtrU1FHBa2aNyZL9" class="footer-link gmap">м. Київ, пр-т Лесі Українки, 26</a>
+                                </li>
+                                <li>
+                                    <a href="mailto:info@devstudio.com" target="_blank" rel="noopener noreferrer nofollow" 
+                                        class="footer-link">info@devstudio.com
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="tel:+380961111111" class="footer-link">+38 096 111 11 11</a>
+                                </li>
+                            </ul>             
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
 </body>
 </html>

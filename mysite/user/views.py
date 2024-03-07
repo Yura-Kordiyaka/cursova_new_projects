@@ -28,12 +28,20 @@ def authorization_user(request):
     elif request.method == "POST":
         if User.objects.filter(username=request.POST['username']).exists():
             messages.error(request, 'користувач з таким нікнеймом вже існує')
-            return redirect('backend/authorization.html')
+            return redirect('authorization')
+        if User.objects.filter(email=request.POST['email']).exists():
+            messages.error(request, 'користувач з такою поштую вже існує')
+            return redirect('authorization')
         if validate_password(request.POST['password']) == False:
             messages.error(request, 'Пароль не повинен містити пробілів')
             messages.error(request, 'Пароль повинен мати хоча б одну цифру')
             messages.error(request, 'пароль повинен містити хоча б одну велику букву')
             messages.error(request, 'Пароль повинен містити хоча б одну малу букву')
             messages.error(request, 'Пароль повинен мати більше ніж 8 символів')
-            return redirect('backend/authorization.html')
-        return HttpResponse('hello')
+            return redirect('authorization')
+        else:
+            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'],email=request.POST['email'])
+            user.last_name = request.POST['last_name']
+            user.first_name = request.POST['first_name']
+            user.save()
+            return redirect('login_user')
