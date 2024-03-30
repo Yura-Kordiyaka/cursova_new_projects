@@ -1,15 +1,16 @@
-from django.conf import settings
-import googlemaps
+from .models import ProductShop
 
-def get_coordinates(address: str):
-    gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
 
-    geocode_result = gmaps.geocode(address)
+def search_products_in_shop(name_of_product):
+    products = ProductShop.objects.filter(name__icontains=name_of_product)
+    return products
 
-    if geocode_result and len(geocode_result) > 0:
-        location = geocode_result[0]['geometry']['location']
-        latitude = location['lat']
-        longitude = location['lng']
-        return latitude, longitude
-    else:
-        pass
+
+def filter_products_in_shop(queryset: ProductShop, sort_param=None):
+    if sort_param is not None:
+        if sort_param == 'expensive_first':
+            queryset = queryset.order_by('price')
+        elif sort_param == 'first_cheap':
+            queryset = queryset.order_by('-price')
+
+    return queryset.all()

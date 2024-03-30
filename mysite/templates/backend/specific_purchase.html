@@ -1,0 +1,24 @@
+{% extends 'backend/base.html' %}
+{% block content %}
+    <h1>Назва {{ user_purchase.name_of_product }}</h1>
+    <h1>ціна {{ user_purchase.price }}</h1>
+    <h1>де була здійснена покупка {{ user_purchase.shop.name }} на {{ user_purchase.shop.address }}</h1>
+
+     <form method="post" action="{% url 'edit_purchase' pk=user_purchase.id %}">
+        {% csrf_token %}
+        <label for="name_of_product">Назва продукту:</label>
+        <input type="text" id="name_of_product" name="name_of_product" value="{{ user_purchase.name_of_product }}">
+
+        <label for="price">Ціна:</label>
+        <input type="text" id="price" name="price" value="{{ user_purchase.price }}">
+
+        <label for="shop">Магазин:</label>
+        <select id="shop" name="shop">
+            {% for shop in shops %}
+                <option value="{{ shop.id }}" {% if shop.id == user_purchase.shop.id %}selected{% endif %}>{{ shop.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Зберегти зміни</button>
+    </form>
+{% endblock %}

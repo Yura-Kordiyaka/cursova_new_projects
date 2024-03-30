@@ -1,0 +1,92 @@
+{% extends 'backend/base.html' %}
+{% block url_patern %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM&loading=async"></script>
+    <link rel="stylesheet" href="/static/main/user_costs.css">
+{% endblock %}
+{% block content %}
+     <a href="{% url "add_purchase" %}">Додати покупку</a>
+    <div class="form-wrapper">
+        <form method="get" action="{% url 'user_costs' %}">
+            <label for="sort">Сортування:</label>
+            <select name="sort" id="sort">
+                <option value="name"  {% if sort_param == 'name' %}selected{% endif %}>По імені</option>
+                <option value="cheap_first"  {% if sort_param == 'cheap_first' %}selected{% endif %}>Спочатку дешеві</option>
+              <option value="expensive_firs"  {% if sort_param == 'expensive_firs' %}selected{% endif %}>Спочатку дорогі</option>
+                <option value="date"  {% if sort_param == 'date' %}selected{% endif %}>по даті додавання</option>
+                 <option value="filter_out" {% if sort_param == 'filter_out' %}selected{% endif %}>Скинути фільтрацію</option>
+            </select>
+            <label for="date_filter">Час додавання:</label>
+            <select name="date_filter" id="date_filter">
+                <option value="whole_period" {% if date_sort == 'whole_period' %}selected{% endif %}>За весь період</option>
+                <option value="today" {% if date_sort == 'today' %}selected{% endif %}>За сьогодні</option>
+                <option value="month" {% if date_sort == 'month' %}selected{% endif %}>За місяць</option>
+             <option value="filter_out_date_filter" {% if sort_param == 'filter_out_date_filter' %}selected{% endif %}>Скинути фільтрацію</option>
+            </select>
+            <button type="submit">Застосувати сортування</button>
+        </form>
+        <p><span>Загальна ціна: </span>4000 грн</p>
+    </div>
+    <div class="main-wrapper">
+        {% for purchase in user_purchases %}
+            <div class="item-purchase">
+                <p class="item-purchase-paragraph item-purchase-span">Назва: </p>
+                <a class="item-purchase-name"
+                   href="{% url 'specific_purchase' pk=purchase.id %}">{{ purchase.name_of_product }}</a>
+                <p><span class="item-purchase-span">Ціна: </span> {{ purchase.price }}</p>
+                <p><span class="item-purchase-span">Придбанно в: </span> {{ purchase.shop.name }}</p>
+                <p><span class="item-purchase-span">Адреса: </span> {{ purchase.shop.address }}</p>
+                <p><span class="item-purchase-span">Дата покупки: </span>{{ purchase.date_add }}</p>
+                {% if purchase.description %}
+                    <p><span class="item-purchase-span">Опис: </span> {{ purchase.description }}</p>
+                {% endif %}
+                <a class="delete-purchase" href="{% url 'delete_purchase' pk=purchase.id %}">Видалити покупку</a>
+            </div>
+        {% endfor %}
+        <div>
+            {% if user_purchases.has_previous %}
+                <a class="pagination__link"
+                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
+                       {{ user_purchases.previous_page_number }}{% else %}?page={{ user_purchases.previous_page_number }}{% endif %}">
+                    Попередня
+                </a>
+            {% endif %}
+            Сторінка {{ user_purchases.number }} з {{ user_purchases.paginator.num_pages }}
+            {% if user_purchases.has_next %}
+                <a class="pagination__link"
+                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
+                       {{ user_purchases.next_page_number }}{% else %}?page={{ user_purchases.next_page_number }}{% endif %}">
+                    Наступна
+                </a>
+            {% endif %}
+        </div>
+        <div id="map_canvas" style="width:700px; height:500px;"></div>
+    </div>
+    <script>
+        let users = JSON.parse('{{ user_purchases_data | escapejs }}');
+        document.addEventListener("DOMContentLoaded", function () {
+            let map;
+
+            async function initMap() {
+                const {Map} = await google.maps.importLibrary("maps");
+                map = new Map(document.getElementById("map_canvas"), {
+                    center: {lat: 49.8721530000, lng: 24.0428920000},
+                    zoom: 11,
+                });
+
+
+                users.forEach(user => {
+                    let position = {lat: Number(user.shop.latitude), lng: Number(user.shop.longitude)};
+                    new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        title: user.shop.name
+                    });
+                });
+
+
+            }
+
+            initMap();
+        });
+    </script>
+{% endblock %}

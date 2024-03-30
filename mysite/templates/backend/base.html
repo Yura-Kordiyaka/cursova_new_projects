@@ -2,73 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/main/style.css">
     <title>Title</title>
+
+    <link rel="stylesheet" href="/static/main/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Neucha&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/44ddc9fabc.js" crossorigin="anonymous"></script>
+
+    {% block url_patern %}
+
+    {% endblock %}
 </head>
 <body>
- <header class="header">
-            <div class="container">
-                <div class="header-general-div">
-                    <nav>
-                        <div class="div-logo-and-ref">
-                            <a href="./index.html" class="logo"><span>My</span>Site</a>
-                            <div class="div-header-link">
-                                <ul class="ul">
-                                    <li class="header-link">
-                                        <a href="./index.html" class="header-link current">Студія</a>
-                                    </li>
-                                    <li class="header-link">
-                                        <a href="./portfolio.html"class="header-link">Портфоліо</a>
-                                    </li>
-                                    <li class="header-link">
-                                        <a href="#"class="header-link">Контакти</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                    <div class="header-address">
+<header class="header">
+    <div class="container">
+        <div class="header-general-div">
+            <nav>
+                <div class="div-logo-and-ref">
+
+                    <a href="{% url "main" %}" class="logo"><i class="fa-solid fa-wallet logo-icon"></i> <span>My</span>Site</a>
+                    <div class="div-header-link">
                         <ul class="ul">
-                            <li>
-                                <a href="mailto:info@devstudio.com" class="header-link address-link">info@devstudio.com</a>
+                            <li class="header-link">
+                                <a href="{% url 'user_costs' %}" class="header-link current">Мої витрати</a>
                             </li>
-                            <li>
-                                <a href="tel:+380961111111" class="header-link address-link">+380961111111</a>
+                            {% if request.user.is_authenticated %}
+                                <li class="header-link">
+                                    <a href="{% url 'log_out' %}" class="header-link">Вийти</a>
+                                </li>
+                            {% endif %}
+                            <li class="header-link">
+                                <a href="{% url 'all_category' %}" class="header-link">Категорії</a>
+                            </li>
+                            <li class="header-link">
+                                <a href="{% url 'users_shop' %}" class="header-link">Мої магазини</a>
+                            </li>
+                            <li class="header-link">
+                                <a href="{% url 'desired_purchase' %}" class="header-link">Список бажаних товарів</a>
                             </li>
                         </ul>
                     </div>
                 </div>
+            </nav>
+            <div class="header-address">
+                <ul class="ul">
+                    <li>
+                        <a href="#" class="header-link address-link">{{ request.user.username }}</a>
+                    </li>
+                </ul>
             </div>
-        </header>
- 
-            {% block content %}
-              
-                
-            {% endblock %}
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-elements">
-                    <a href="./index.html" class="logo footer-logo"><span>Web</span>Studio</a>
-                    <div class="footer-links">
-                        <address>
-                            <ul class="ul">
-                                <li>
-                                    <a href="https://goo.gl/maps/CPtrU1FHBa2aNyZL9" class="footer-link gmap">м. Київ, пр-т Лесі Українки, 26</a>
-                                </li>
-                                <li>
-                                    <a href="mailto:info@devstudio.com" target="_blank" rel="noopener noreferrer nofollow" 
-                                        class="footer-link">info@devstudio.com
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="tel:+380961111111" class="footer-link">+38 096 111 11 11</a>
-                                </li>
-                            </ul>             
-                        </address>
-                    </div>
-                </div>
+        </div>
+    </div>
+</header>
+
+{% block content %}
+
+
+{% endblock %}
+<footer class="footer">
+    <div class="container">
+        <div class="footer-elements">
+            <a href="{% url "main" %}" class="logo footer-logo"><span>My</span>Site</a>
+            <div class="footer-links">
+                <address>
+                    <ul class="ul">
+                        <li>
+                            <a href="https://www.google.com/maps/search/?api=1&query=м. Львів, вул. Наукова, 35а" class="footer-link gmap">м. Київ, пр-т Лесі
+                                Українки, 26</a>
+                        </li>
+                        <li>
+                            <a href="mailto:info@devstudio.com" target="_blank" rel="noopener noreferrer nofollow"
+                               class="footer-link">info@devstudio.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+380961111111" class="footer-link">+38 096 111 11 11</a>
+                        </li>
+                    </ul>
+                </address>
             </div>
-        </footer>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>

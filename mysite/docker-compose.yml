@@ -7,7 +7,6 @@ services:
     build: ./docker/nginx
     volumes:
       - .:/mysite
-      - ./templates:/mysite/templates
     ports:
       - 1517:80
     depends_on:
@@ -18,7 +17,7 @@ services:
   db:
     image: mysql
     ports:
-      - '3006:3306'
+      - '3315:3306'
     environment:
        MYSQL_DATABASE: 'my_site_db'
        MYSQL_ROOT: 'root'
@@ -36,7 +35,7 @@ services:
     volumes:
       - .:/my_site
 
-    command: "gunicorn mysite.wsgi:application --bind 0.0.0.0:8080 --reload"
+    command: "gunicorn mysite.wsgi:application --bind 0.0.0.0:8080"
     depends_on:
       - db
     links:

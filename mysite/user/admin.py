@@ -1,7 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
+from backend.models import UserCategory
+
+
+class CategoryInline(admin.StackedInline):
+    model = UserCategory
+    readonly_fields = ["name"]
+
+
 class CustomUserAdmin(UserAdmin):
+    inlines = [CategoryInline]
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email', 'phone_number', 'third_name')}),

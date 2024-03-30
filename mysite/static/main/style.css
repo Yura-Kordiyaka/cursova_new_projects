@@ -2,10 +2,23 @@ body {
     margin: 0;
     padding: 0;
     background: #FFFFFF;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
+    font-family: "Shantell Sans", sans-serif;
+    font-weight: 300;
 }
 
+
+select {
+    font-family: inherit;
+        font-weight: 300;
+}
+
+button{
+        font-family: inherit;
+    font-weight: 300;
+}
+.header{
+    font-weight: 700;
+}
 .container {
     margin: 0 auto;
 }
@@ -22,7 +35,7 @@ ul {
 
 
 :root {
-    --accent-color: #2196F3;
+    --accent-color: #165e16;
     --color-address-link: #757575;
     --background-color: #2F303A;
     --text-color-secondary: #212121;
@@ -33,9 +46,15 @@ ul {
 .logo {
     color: #000000;
     padding: 24px 93px 0 215px;
-    font-family: 'Raleway', sans-serif;
+    font-family: inherit;
+    font-weight: inherit;
     font-size: 26px;
     letter-spacing: 0.03em;
+}
+
+.logo-icon {
+    color: var(--accent-color);
+
 }
 
 .logo span {
@@ -44,8 +63,8 @@ ul {
 
 .header-link {
     color: #000000;
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: inherit;
+    font-size: 25px;
     line-height: 1.14;
     letter-spacing: 0.02em;
 }
@@ -90,6 +109,7 @@ ul {
 }
 
 .footer {
+    font-weight: 700;
     background-color: var(--background-color);
 }
 
@@ -100,7 +120,7 @@ ul {
 
 .footer-link {
     font-style: normal;
-    font-weight: 400;
+    font-weight: inherit;
     font-size: 14px;
     line-height: 1.71;
     letter-spacing: 0.03em;
@@ -131,3 +151,4 @@ ul {
     flex-direction: column;
     gap: 9px;
 }
+

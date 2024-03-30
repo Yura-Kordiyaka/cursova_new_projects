@@ -1,0 +1,54 @@
+{% extends 'backend/base.html' %}
+{% block content %}
+    <a href="{% url "add_purchase" %}">Додати магазин</a>
+    <div class="form-wrapper">
+        <form method="get" action="{% url 'users_shop' %}">
+            <label for="sort">Сортування:</label>
+            <select name="sort" id="sort">
+                <option value="name" {% if sort_param == 'name' %}selected{% endif %}>По імені</option>
+                <option value="date" {% if sort_param == 'date' %}selected{% endif %}>по даті додавання</option>
+                 <option value="filter_out" {% if sort_param == 'filter_out' %}selected{% endif %}>Скинути фільтрацію</option>
+            </select>
+            <label for="date_filter">Час додавання:</label>
+            <select name="date_filter" id="date_filter">
+                <option value="whole_period" {% if sort_param == 'whole_period' %}selected{% endif %}>За весь період
+                </option>
+                <option value="today" {% if sort_param == 'today' %}selected{% endif %}>За сьогодні</option>
+                <option value="month" {% if sort_param == 'month' %}selected{% endif %}>За місяць</option>
+                <option value="filter_out_date_filter" {% if sort_param == 'filter_out_date_filter' %}selected{% endif %}>Скинути фільтрацію</option>
+            </select>
+            <button type="submit">Застосувати сортування</button>
+        </form>
+    </div>
+    <div class="main-wrapper">
+        {% for shop in user_shops %}
+            <div class="item-purchase">
+                <p class="item-purchase-paragraph item-purchase-span">Назва: </p>
+                <a class="item-purchase-name"
+                >{{ shop.name }}</a>
+                <a class="delete-purchase">Видалити Магазин</a>
+                <a class="item-purchase-paragraph item-purchase-span">Адесса: {{ shop.address }}</a>
+                <a class="" href="{% url "delete_user_shop" pk=shop.id %}">Видалити магазин</a>
+            </div>
+        {% endfor %}
+        <div>
+            <div>
+                {% if user_shops.has_previous %}
+                    <a class="pagination__link"
+                       href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
+
+
+                           {{ user_shops.previous_page_number }}{% else %}?page={{ user_shops.previous_page_number }}{% endif %}">
+                        Попередня
+                    </a>
+                {% endif %}
+                Сторінка {{ user_shops.number }} з {{ user_shops.paginator.num_pages }}
+                {% if user_shops.has_next %}
+                    <a class="pagination__link"
+                       href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
+                       {{ user_shops.next_page_number }}{% else %}?page={{ user_shops.next_page_number }}{% endif %}">
+                        Наступна
+                    </a>
+                {% endif %}
+            </div>
+{% endblock %}

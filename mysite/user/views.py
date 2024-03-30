@@ -7,6 +7,7 @@ from django.shortcuts import redirect, reverse
 from .models import User
 from .utilits import validate_password
 from django.contrib import messages
+from django.contrib.auth import logout
 
 
 def login_user(request):
@@ -40,8 +41,15 @@ def authorization_user(request):
             messages.error(request, 'Пароль повинен мати більше ніж 8 символів')
             return redirect('authorization')
         else:
-            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'],email=request.POST['email'])
+            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'],
+                                            email=request.POST['email'])
             user.last_name = request.POST['last_name']
             user.first_name = request.POST['first_name']
             user.save()
             return redirect('login_user')
+
+
+def log_out(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('login_user')
