@@ -23,7 +23,8 @@ def main(request):
 
 def all_category(request):
     categories = UserCategory.objects.filter(user=request.user).all()
-    sort_by = request.GET.get("sort", "")
+    sort_by = request.GET.get("sort", 'name')
+    print(sort_by)
     if sort_by == 'name':
         categories = UserCategory.objects.order_by('name')
     elif sort_by == 'date':
@@ -42,8 +43,8 @@ def all_category(request):
 
 def get_product_by_category(request, pk):
     category = UserCategory.objects.get(id=pk)
-    sort_by = request.GET.get("sort", None)
-    date_sort = request.GET.get('date_filter', None)
+    sort_by = request.GET.get("sort", 'name')
+    date_sort = request.GET.get('date_filter', 'whole_period')
     shops = Shop.objects.all()
     user_purchases = UserPurchases.objects.filter(category=category, user=request.user).all()
     user_purchases = filter_user_purchase(queryset=user_purchases, sort_param=sort_by, date_sort=date_sort)
@@ -70,7 +71,7 @@ def delete_purchase(request, pk):
     category_id = user_purchase.category.id
     messages.success(request, f'покупка {user_purchase.name_of_product} видалена успішно')
     user_purchase.delete()
-    return redirect(reverse('get_product_by_category', args=(category_id,)))
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def delete_category(request, pk):
@@ -105,7 +106,7 @@ def add_purchase(request):
                                          shop=shop,
                                          description=description)
             messages.success(request, f'Покупка {name_of_product} успішно додана')
-            return redirect(reverse('get_product_by_category', args=(user_category.id,)))
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
         shops = UserShop.objects.filter(user=request.user).all()
         categories = UserCategory.objects.filter(user=request.user).all()
@@ -141,9 +142,9 @@ def edit_purchase(request, pk):
 
 
 def user_costs(request):
-    sort_by = request.GET.get("sort", None)
+    sort_by = request.GET.get("sort", 'name')
     shops = Shop.objects.all()
-    date_sort = request.GET.get('date_filter', None)
+    date_sort = request.GET.get('date_filter', 'whole_period')
     user_purchases = UserPurchases.objects.filter(user=request.user).all()
     user_purchases = filter_user_purchase(queryset=user_purchases, sort_param=sort_by, date_sort=date_sort)
     all_price = user_purchases.aggregate(Sum('price'))['price__sum']
@@ -182,8 +183,8 @@ def desired_purchase(request):
 def add_user_shop(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
-            address = request.POST['address']
-            name = request.POST['name']
+            address = request.POST['address_shop']
+            name = request.POST['name_shop']
             UserShop.objects.create(name=name, address=address, user=request.user)
 
             return redirect(request.META.get('HTTP_REFERER'))
@@ -191,8 +192,8 @@ def add_user_shop(request):
 
 def user_shops(request):
     shops_query_set = UserShop.objects.filter(user=request.user)
-    sort_by = request.GET.get("sort", None)
-    date_sort = request.GET.get('date_filter', None)
+    sort_by = request.GET.get("sort", 'name')
+    date_sort = request.GET.get('date_filter', 'whole_period')
     shops_query_set = filter_user_shops(queryset=shops_query_set, sort_param=sort_by, date_sort=date_sort)
     paginator = Paginator(shops_query_set, 10)
     page = request.GET.get("page", 1)
@@ -210,4 +211,9 @@ def user_shops(request):
 def delete_user_shop(request, pk):
     user_shop = UserShop.objects.get(id=pk)
     user_shop.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def delete_desired_purchase(request, pk):
+    user_purchase = DesiredPurchases.objects.get(id=pk)
+    user_purchase.delete()
     return redirect(request.META.get('HTTP_REFERER'))

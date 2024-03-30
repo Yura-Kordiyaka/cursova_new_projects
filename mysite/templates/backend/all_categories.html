@@ -10,29 +10,41 @@
             <select id="sort" name="sort">
                 <option value="name" {% if sort_param == 'name' %}selected{% endif %}>Імя</option>
                 <option value="date" {% if sort_param == 'date' %}selected{% endif %}>Створенно</option>
-                <option value="filter_out" {% if sort_param == 'filter_out' %}selected{% endif %}>Скинути фільтрацію</option>
             </select>
             <button type="submit">Застосувати сортування</button>
         </form>
+        <button class="add-category-button" id="add-category-button">Додати категорію</button>
+
+    </div>
+    <div class="add-category-form">
+        <form action="{% url 'add_category' %}" method="post">
+            {% csrf_token %}
+            <label for="name-category">
+                Ім'я категорії
+            </label>
+            <input name="category_name" id="name-category" type="text" required minlength="2">
+            <button type="submit">Додати Категорію</button>
+        </form>
     </div>
     <div class="main-wrapper">
-            {% for category in categories %}
-                <div class="category-item">
-                    <p class="item-category-paragraph item-category-span">Назва: </p>
-                    <a class="item-category-name"
-                       href="{% url 'get_product_by_category' pk=category.id %}">{{ category.name }}</a>
-                    <p><span class="item-category-span">Дата додавання: </span> {{ category.date_add }}</p>
-                    <a class="delete-category" href="{% url 'delete_category' pk=category.id %}"> видалити
-                        категорію </a>
+        {% for category in categories %}
+            <div class="category-item">
+                <p class="item-category-paragraph item-category-span">Назва: </p>
+                <a class="item-category-name"
+                   href="{% url 'get_product_by_category' pk=category.id %}">{{ category.name }}</a>
+                <p><span class="item-category-span">Дата додавання: </span> {{ category.date_add }}</p>
+                <button class="edit-button-category" id="category_{{ category.id }}">Редагувати категорію</button>
+                <form id="edit_form_{{ category.id }}" class="edit-category" method="post"
+                      action="{% url "edit_category" pk=category.id %}">
+                    {% csrf_token %}
+                    <input type="text" name="name" value="{{ category.name }}">
+                    <button type="submit">Зберегти</button>
+                </form>
+                <a class="delete-category" href="{% url 'delete_category' pk=category.id %}"> видалити
+                    категорію </a>
 
-                    <form id="edit_form_{{ category.id }}" method="post"
-                          action="{% url "edit_category" pk=category.id %}">
-                        {% csrf_token %}
-                        <input type="text" name="name" value="{{ category.name }}">
-                        <button type="submit">Зберегти</button>
-                    </form>
-                </div>
-            {% endfor %}
+            </div>
+        {% endfor %}
         <div>
             {% if messages %}
                 {% for message in messages %}
@@ -75,6 +87,39 @@
     {#            </button>#}
     {#        </div>#}
     {#    </form>#}
+    <script>
+        let buttonAddCategory = document.getElementById('add-category-button');
+        buttonAddCategory.addEventListener('click', function () {
+            if (buttonAddCategory.classList.contains('add-category-button')) {
+                document.querySelector('.add-category-form').style.display = 'block';
+                buttonAddCategory.innerText = 'Скасувати додавання';
+                buttonAddCategory.classList.remove('add-category-button');
+                buttonAddCategory.classList.add('stop-adding-category');
+            } else {
+                document.querySelector('.add-category-form').style.display = 'none';
+                buttonAddCategory.innerText = 'Додати категорію';
+                buttonAddCategory.classList.add('add-category-button');
+                buttonAddCategory.classList.remove('stop-adding-category');
+            }
 
+
+        });
+        const editButtons = document.querySelectorAll('.edit-button-category');
+
+        editButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const categoryId = button.id.split('_')[1];
+                const editForm = document.getElementById('edit_form_' + categoryId);
+
+                if (editForm.style.display === 'none') {
+                    button.textContent = 'Закінчити редагування';
+                    editForm.style.display = 'block';
+                } else {
+                    button.textContent = 'Редагувати категорію';
+                    editForm.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
 {% endblock %}

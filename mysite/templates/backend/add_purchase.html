@@ -55,47 +55,13 @@
                     </div>
                 </form>
     </section>
-    <section id="add_shop_section" style="display: none;">
-            <form method="post" action="{% url 'add_user_shop' %}">
-                {% csrf_token %}
-                 <input name="name" placeholder="введіть назву магазину" type="text" required/>
-                <input name="address" id="autocomplete" placeholder="введіть адресу магазину" type="text" required/>
-                <button type="submit">Submit</button>
-            </form>
+    <section>
+            {% if messages %}
+                {% for message in messages %}
+                    <li>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            {% endif %}
     </section>
-    <button id="close_add_shop_button" style="display: none">Відмінити додавання магазин</button>
-    <button id="show_add_shop_button">Додати магазин</button>
-
-
-    <script>
-        document.getElementById('show_add_shop_button').addEventListener('click', function () {
-            document.getElementById('add_shop_section').style.display = 'block';
-            document.getElementById('show_add_shop_button').style.display = 'none';
-            document.getElementById('close_add_shop_button').style.display = 'block';
-            initAutocomplete();
-        });
-         document.getElementById('close_add_shop_button').addEventListener('click', function () {
-            document.getElementById('add_shop_section').style.display = 'none';
-            document.getElementById('close_add_shop_button').style.display = 'none';
-            document.getElementById('show_add_shop_button').style.display = 'block';
-            initAutocomplete();
-        });
-        let autocomplete;
-
-        function initAutocomplete() {
-            autocomplete = new google.maps.places.Autocomplete(
-                document.getElementById('autocomplete'),
-                {types: ['geocode']}
-            );
-
-            autocomplete.addListener('place_changed', onPlaceChanged);
-        }
-
-        function onPlaceChanged() {
-            const place = autocomplete.getPlace(); // отримуємо об'єкт місця через autocomplete
-            console.log(place);
-        }
-
-        google.maps.event.addDomListener(window, 'load', initAutocomplete);
-    </script>
 {% endblock %}

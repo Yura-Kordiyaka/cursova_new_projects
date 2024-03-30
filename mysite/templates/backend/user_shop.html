@@ -1,33 +1,48 @@
 {% extends 'backend/base.html' %}
+{% block url_patern %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM&libraries=places&loading=async"></script>
+    <link rel="stylesheet" href="/static/main/user_shop.css">
+{% endblock %}
 {% block content %}
-    <a href="{% url "add_purchase" %}">Додати магазин</a>
     <div class="form-wrapper">
         <form method="get" action="{% url 'users_shop' %}">
             <label for="sort">Сортування:</label>
             <select name="sort" id="sort">
                 <option value="name" {% if sort_param == 'name' %}selected{% endif %}>По імені</option>
                 <option value="date" {% if sort_param == 'date' %}selected{% endif %}>по даті додавання</option>
-                 <option value="filter_out" {% if sort_param == 'filter_out' %}selected{% endif %}>Скинути фільтрацію</option>
+                </option>
             </select>
             <label for="date_filter">Час додавання:</label>
             <select name="date_filter" id="date_filter">
                 <option value="whole_period" {% if sort_param == 'whole_period' %}selected{% endif %}>За весь період
                 </option>
                 <option value="today" {% if sort_param == 'today' %}selected{% endif %}>За сьогодні</option>
-                <option value="month" {% if sort_param == 'month' %}selected{% endif %}>За місяць</option>
-                <option value="filter_out_date_filter" {% if sort_param == 'filter_out_date_filter' %}selected{% endif %}>Скинути фільтрацію</option>
+                <option value="month" {% if sort_param == 'month' %}selected{% endif %}>За місяць</option>             
             </select>
             <button type="submit">Застосувати сортування</button>
+        </form>
+        <button class="add-shop-button" id="add-shop-button">Додати магазин</button>
+    </div>
+    <div class="add-shop-form">
+        <form method="post" action="{% url "add_user_shop" %}">
+            {% csrf_token %}
+            <label for="name-shop">
+                Назва магазину
+            </label>
+            <input name="name_shop" id="name-shop" type="text" required minlength="2">
+            <label for="address-shop">
+                Адреса магазину
+            </label>
+            <input name="address_shop" id="address-shop" type="text" required minlength="5">
+            <button type="submit">Додати магазин</button>
         </form>
     </div>
     <div class="main-wrapper">
         {% for shop in user_shops %}
             <div class="item-purchase">
-                <p class="item-purchase-paragraph item-purchase-span">Назва: </p>
-                <a class="item-purchase-name"
-                >{{ shop.name }}</a>
-                <a class="delete-purchase">Видалити Магазин</a>
+                <p class="item-purchase-paragraph item-purchase-span">Назва: {{ shop.name }} </p>
                 <a class="item-purchase-paragraph item-purchase-span">Адесса: {{ shop.address }}</a>
+                <p>Додано в {{ shop.date_add }}</p>
                 <a class="" href="{% url "delete_user_shop" pk=shop.id %}">Видалити магазин</a>
             </div>
         {% endfor %}
@@ -38,6 +53,7 @@
                        href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
 
 
+                           
                            {{ user_shops.previous_page_number }}{% else %}?page={{ user_shops.previous_page_number }}{% endif %}">
                         Попередня
                     </a>
@@ -51,4 +67,43 @@
                     </a>
                 {% endif %}
             </div>
+            <script>    
+                
+                let buttonAddShop= document.getElementById('add-shop-button');
+                buttonAddShop.addEventListener('click', function () {
+                    if(buttonAddShop.classList.contains('add-shop-button')){
+                        document.querySelector('.add-shop-form').style.display = 'block';
+                        buttonAddShop.innerText='Скасувати додавання';
+                        buttonAddShop.classList.remove('add-shop-button');
+                        buttonAddShop.classList.add('stop-adding-shop');
+                    }
+                    else{
+                        document.querySelector('.add-shop-form').style.display = 'none';
+                        buttonAddShop.innerText='Додати магазин';
+                        buttonAddShop.classList.add('add-shop-button');
+                        buttonAddShop.classList.remove('stop-adding-shop');
+                    }    
+                   
+         
+                    initAutocomplete();
+                });
+
+                let autocomplete;
+
+                function initAutocomplete() {
+                    autocomplete = new google.maps.places.Autocomplete(
+                        document.getElementById('address-shop'),
+                        {types: ['geocode']}
+                    );
+
+                    autocomplete.addListener('place_changed', onPlaceChanged);
+                }
+
+                function onPlaceChanged() {
+                    const place = autocomplete.getPlace(); // отримуємо об'єкт місця через autocomplete
+                    console.log(place);
+                }
+
+                google.maps.event.addDomListener(window, 'load', initAutocomplete);
+            </script>
 {% endblock %}

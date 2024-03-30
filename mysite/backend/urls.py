@@ -32,7 +32,10 @@ urlpatterns = [
     path('edit_category/<int:pk>/', views.edit_category, name='edit_category'),
     path('costs/', views.user_costs, name='user_costs'),
     path('desired_purchase/', views.desired_purchase, name='desired_purchase'),
+    path('delete_desired_purchase/<int:pk>/', views.delete_desired_purchase, name='delete_desired_purchase'),
     path('add_user_shop/', views.add_user_shop, name='add_user_shop'),
     path('user_shop/', views.user_shops, name='users_shop'),
-    path('shop/delete/<int:pk>/', views.delete_user_shop, name='delete_user_shop')
+    path('shop/delete/<int:pk>/', views.delete_user_shop, name='delete_user_shop'),
+
+
 ]

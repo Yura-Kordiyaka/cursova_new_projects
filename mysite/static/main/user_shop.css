@@ -1,22 +1,10 @@
-.main-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-weight: 300;
-    gap: 30px;
-    padding: 0 200px 100px;
-}
-
 .form-wrapper {
-    padding: 20px 200px;
-    font-size: 20px;
+    padding: 0 200px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 
 }
-
 .form-wrapper span{
     font-weight: 700;
     font-size: 20px;
@@ -32,10 +20,9 @@ form select {
 
 form select:hover,
 form select:focus {
-    border-color: #aaa; /* Колір границі при наведенні або фокусі */
+    border-color: #aaa;
 }
 
-/* Стилізація для кнопки */
 form button {
     padding: 10px 20px;
     font-size: 16px;
@@ -50,54 +37,7 @@ form button {
 form button:hover {
     background-color: #20771b; /* Колір фону при наведенні */
 }
-.add-category-form{
+
+.add-shop-form{
     display: none;
-}
-
-.category-item {
-    width: 100%;
-    border: 1px solid #ccc;
-    padding: 20px;
-    font-size: 20px;
-    transition: box-shadow 0.3s ease;
-
-}
-.item-category-paragraph{
-    display: inline;
-
-}
-.item-category-name{
-
-    font-weight: 700;
-    font-size: 19px;
-    transition: font-size 0.3s ease;
-}
-.item-category-name:focus,
-.item-category-name:hover{
-    font-size: 22px;
-}
-.item-category-span {
-    font-weight: 700;
-}
-.edit-category{
-    display: none;
-}
-.category-item a {
-    color: var(--accent-color);
-}
-
-.category-item:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-}
-
-.delete-category {
-     display: inline;
-    transition: font-size 0.3s ease;
-}
-
-.delete-category:hover,
-.delete-category:focus {
-    font-size: 30px;
-    color: #3f0202;
-    font-weight: 500;
 }

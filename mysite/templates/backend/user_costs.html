@@ -4,7 +4,9 @@
     <link rel="stylesheet" href="/static/main/user_costs.css">
 {% endblock %}
 {% block content %}
+    <div>
      <a href="{% url "add_purchase" %}">Додати покупку</a>
+    </div>
     <div class="form-wrapper">
         <form method="get" action="{% url 'user_costs' %}">
             <label for="sort">Сортування:</label>
@@ -13,18 +15,17 @@
                 <option value="cheap_first"  {% if sort_param == 'cheap_first' %}selected{% endif %}>Спочатку дешеві</option>
               <option value="expensive_firs"  {% if sort_param == 'expensive_firs' %}selected{% endif %}>Спочатку дорогі</option>
                 <option value="date"  {% if sort_param == 'date' %}selected{% endif %}>по даті додавання</option>
-                 <option value="filter_out" {% if sort_param == 'filter_out' %}selected{% endif %}>Скинути фільтрацію</option>
+                 
             </select>
             <label for="date_filter">Час додавання:</label>
             <select name="date_filter" id="date_filter">
                 <option value="whole_period" {% if date_sort == 'whole_period' %}selected{% endif %}>За весь період</option>
                 <option value="today" {% if date_sort == 'today' %}selected{% endif %}>За сьогодні</option>
                 <option value="month" {% if date_sort == 'month' %}selected{% endif %}>За місяць</option>
-             <option value="filter_out_date_filter" {% if sort_param == 'filter_out_date_filter' %}selected{% endif %}>Скинути фільтрацію</option>
             </select>
             <button type="submit">Застосувати сортування</button>
         </form>
-        <p><span>Загальна ціна: </span>4000 грн</p>
+        <p><span>Загальна ціна: </span>{{ all_price }} грн</p>
     </div>
     <div class="main-wrapper">
         {% for purchase in user_purchases %}

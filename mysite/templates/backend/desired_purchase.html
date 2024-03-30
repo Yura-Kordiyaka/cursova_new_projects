@@ -2,12 +2,25 @@
 
 {% block url_patern %}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM&loading=async"></script>
+    <link rel="stylesheet" href="/static/main/desired_purchase.css">
 {% endblock %}
 
 {% block content %}
-
-    <button onclick="getLocation()">Get Location</button>
-    <div>
+    <div class="form-wrapper">
+        <form>
+            <label for="sort">Сортування:</label>
+            <select name="sort" id="sort">
+                <option value="cheap_first" {% if sort_param == 'cheap_first' %}selected{% endif %}>Спочатку дешеві
+                </option>
+                <option value="expensive_firs" {% if sort_param == 'expensive_firs' %}selected{% endif %}>Спочатку
+                    дорогі
+                </option>
+            </select>
+            <button type="submit">Додати</button>
+        </form>
+        <button class="add-button-desired-purchase" id="add-button-desired-purchase">Додати бажану покупку</button>
+    </div>
+    <div class="add-desired-purchase">
         <form action="{% url "add_purchase" %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="add_desired_purchase">
@@ -29,72 +42,54 @@
     <div class="main-wrapper">
         {% for purchase  in desired_purchase %}
             <p>Назва: {{ purchase.name_of_product }}</p>
-            <a class="delete-desired-purchase" href="#">Видалити товар</a>
-            <a class="search-in-shop" href="{% url 'search_in_shop' name_of_product=purchase.name_of_product %}">Знайти у магазинах</a>
+            <a class="delete-desired-purchase" href="{% url 'delete_desired_purchase' pk=purchase.id %}">Видалити
+                товар</a>
+            <a class="search-in-shop" href="{% url 'search_in_shop' name_of_product=purchase.name_of_product %}">Знайти
+                у магазинах</a>
             <hr>
         {% endfor %}
     </div>
     <div>
-    {% if desired_purchase.has_previous %}
-        <a class="pagination__link"
-           href="{% if sort_param %}{{ request.get_full_path }}&page=
+        {% if desired_purchase.has_previous %}
+            <a class="pagination__link"
+               href="{% if sort_param %}{{ request.get_full_path }}&page=
 
-               {{ desired_purchase.previous_page_number }}{% else %}?page={{ desired_purchase.previous_page_number }}{% endif %}">
-            Попередня
-        </a>
-    {% endif %}
-    Сторінка {{ desired_purchase.number }} з {{ desired_purchase.paginator.num_pages }}
-    {% if categories.has_next %}
-        <a class="pagination__link"
-           href="{% if sort_param %}{{ request.get_full_path }}&page=
+               
+                   
+                   {{ desired_purchase.previous_page_number }}{% else %}?page={{ desired_purchase.previous_page_number }}{% endif %}">
+                Попередня
+            </a>
+        {% endif %}
+        Сторінка {{ desired_purchase.number }} з {{ desired_purchase.paginator.num_pages }}
+        {% if categories.has_next %}
+            <a class="pagination__link"
+               href="{% if sort_param %}{{ request.get_full_path }}&page=
 
-               {{ desired_purchase.next_page_number }}{% else %}?page={{ desired_purchase.next_page_number }}{% endif %}">
-            Наступна
-        </a>
-    {% endif %}
+               
+                   
+                   {{ desired_purchase.next_page_number }}{% else %}?page={{ desired_purchase.next_page_number }}{% endif %}">
+                Наступна
+            </a>
+        {% endif %}
     </div>
-        <div id="map_canvas" style="width:700px; height:500px;"></div>
+    <div id="map_canvas" style="width:700px; height:500px;"></div>
     <script>
-        function getLocation() {
-            fetch('https://api.geoapify.com/v1/ipinfo?&apiKey=af912534f60545758849ba12bf9e0f7d', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            let map;
-
-
-            async function initMap() {
-                const {Map} = await google.maps.importLibrary("maps");
-                map = new Map(document.getElementById("map_canvas"), {
-                    center: {lat: 49.8721530000, lng: 24.0428920000},
-                    zoom: 11,
-                });
-
-
-                let position = {lat: Number(49.7811456), lng: Number(23.6355584)};
-                new google.maps.Marker({
-                    position: position,
-                    map: map,
-                });
-
-
+        let buttonAddPurchase = document.getElementById('add-button-desired-purchase');
+        buttonAddPurchase.addEventListener('click', function () {
+            if (buttonAddPurchase.classList.contains('add-button-desired-purchase')) {
+                document.querySelector('.add-desired-purchase').style.display = 'block';
+                buttonAddPurchase.innerText = 'Скасувати додавання';
+                buttonAddPurchase.classList.remove('add-button-desired-purchase');
+                buttonAddPurchase.classList.add('stop-adding-purchase');
+            } else {
+                document.querySelector('.add-desired-purchase').style.display = 'none';
+                buttonAddPurchase.innerText = 'Додати бажану покупку';
+                buttonAddPurchase.classList.add('add-button-desired-purchase');
+                buttonAddPurchase.classList.remove('stop-adding-purchase');
             }
 
-            initMap();
 
         });
+      
     </script>
 {% endblock %}

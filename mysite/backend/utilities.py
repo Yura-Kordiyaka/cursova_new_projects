@@ -24,7 +24,7 @@ def filter_user_purchase(queryset: UserPurchases, sort_param=None, date_sort=Non
         elif sort_param == 'expensive_firs':
             queryset = queryset.order_by('-price')
         elif sort_param == 'date':
-            queryset = queryset.order_by('date_add')
+            queryset = queryset.order_by('-date_add')
 
     return queryset.all()
 
@@ -45,6 +45,6 @@ def filter_user_shops(queryset: UserShop, sort_param=None, date_sort=None):
         if sort_param == 'name':
             queryset = queryset.order_by('name')
         elif sort_param == 'date':
-            queryset = queryset.order_by('date_add')
+            queryset = queryset.order_by('-date_add')
 
     return queryset.all()
