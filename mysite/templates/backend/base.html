@@ -27,11 +27,6 @@
                             <li class="header-link">
                                 <a href="{% url 'user_costs' %}" class="header-link current">Мої витрати</a>
                             </li>
-                            {% if request.user.is_authenticated %}
-                                <li class="header-link">
-                                    <a href="{% url 'log_out' %}" class="header-link">Вийти</a>
-                                </li>
-                            {% endif %}
                             <li class="header-link">
                                 <a href="{% url 'all_category' %}" class="header-link">Категорії</a>
                             </li>
@@ -48,6 +43,7 @@
             <div class="header-address">
                 <ul class="ul">
                     <li>
+                        <a href="{% url 'log_out' %}" class="header-link address-link exit-link"><i class="fa-solid fa-right-from-bracket"></i></a>
                         <a href="#" class="header-link address-link">{{ request.user.username }}</a>
                     </li>
                 </ul>

@@ -213,6 +213,7 @@ def delete_user_shop(request, pk):
     user_shop.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
+
 def delete_desired_purchase(request, pk):
     user_purchase = DesiredPurchases.objects.get(id=pk)
     user_purchase.delete()

@@ -17,7 +17,7 @@
                 <option value="whole_period" {% if sort_param == 'whole_period' %}selected{% endif %}>За весь період
                 </option>
                 <option value="today" {% if sort_param == 'today' %}selected{% endif %}>За сьогодні</option>
-                <option value="month" {% if sort_param == 'month' %}selected{% endif %}>За місяць</option>             
+                <option value="month" {% if sort_param == 'month' %}selected{% endif %}>За місяць</option>
             </select>
             <button type="submit">Застосувати сортування</button>
         </form>
@@ -33,7 +33,7 @@
             <label for="address-shop">
                 Адреса магазину
             </label>
-            <input name="address_shop" id="address-shop" type="text" required minlength="5">
+            <input name="address_shop" id="address-shop" placeholder="" type="text" required minlength="5">
             <button type="submit">Додати магазин</button>
         </form>
     </div>
@@ -46,64 +46,64 @@
                 <a class="" href="{% url "delete_user_shop" pk=shop.id %}">Видалити магазин</a>
             </div>
         {% endfor %}
-        <div>
-            <div>
-                {% if user_shops.has_previous %}
-                    <a class="pagination__link"
-                       href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
+        <div class="paginator">
+            {% if user_shops.has_previous %}
+                <a class="pagination__link"
+                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
 
 
                            
-                           {{ user_shops.previous_page_number }}{% else %}?page={{ user_shops.previous_page_number }}{% endif %}">
-                        Попередня
-                    </a>
-                {% endif %}
-                Сторінка {{ user_shops.number }} з {{ user_shops.paginator.num_pages }}
-                {% if user_shops.has_next %}
-                    <a class="pagination__link"
-                       href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
+                           
+                       {{ user_shops.previous_page_number }}{% else %}?page={{ user_shops.previous_page_number }}{% endif %}">
+                    Попередня
+                </a>
+            {% endif %}
+            Сторінка {{ user_shops.number }} з {{ user_shops.paginator.num_pages }}
+            {% if user_shops.has_next %}
+                <a class="pagination__link"
+                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
                        {{ user_shops.next_page_number }}{% else %}?page={{ user_shops.next_page_number }}{% endif %}">
-                        Наступна
-                    </a>
-                {% endif %}
-            </div>
-            <script>    
-                
-                let buttonAddShop= document.getElementById('add-shop-button');
-                buttonAddShop.addEventListener('click', function () {
-                    if(buttonAddShop.classList.contains('add-shop-button')){
-                        document.querySelector('.add-shop-form').style.display = 'block';
-                        buttonAddShop.innerText='Скасувати додавання';
-                        buttonAddShop.classList.remove('add-shop-button');
-                        buttonAddShop.classList.add('stop-adding-shop');
-                    }
-                    else{
-                        document.querySelector('.add-shop-form').style.display = 'none';
-                        buttonAddShop.innerText='Додати магазин';
-                        buttonAddShop.classList.add('add-shop-button');
-                        buttonAddShop.classList.remove('stop-adding-shop');
-                    }    
-                   
-         
-                    initAutocomplete();
-                });
+                    Наступна
+                </a>
+            {% endif %}
+        </div>
+    </div>
+        <script>
 
-                let autocomplete;
-
-                function initAutocomplete() {
-                    autocomplete = new google.maps.places.Autocomplete(
-                        document.getElementById('address-shop'),
-                        {types: ['geocode']}
-                    );
-
-                    autocomplete.addListener('place_changed', onPlaceChanged);
+            let buttonAddShop = document.getElementById('add-shop-button');
+            buttonAddShop.addEventListener('click', function () {
+                if (buttonAddShop.classList.contains('add-shop-button')) {
+                    document.querySelector('.add-shop-form').style.display = 'flex';
+                    buttonAddShop.innerText = 'Скасувати додавання';
+                    buttonAddShop.classList.remove('add-shop-button');
+                    buttonAddShop.classList.add('stop-adding-shop');
+                } else {
+                    document.querySelector('.add-shop-form').style.display = 'none';
+                    buttonAddShop.innerText = 'Додати магазин';
+                    buttonAddShop.classList.add('add-shop-button');
+                    buttonAddShop.classList.remove('stop-adding-shop');
                 }
 
-                function onPlaceChanged() {
-                    const place = autocomplete.getPlace(); // отримуємо об'єкт місця через autocomplete
-                    console.log(place);
-                }
 
-                google.maps.event.addDomListener(window, 'load', initAutocomplete);
-            </script>
+                initAutocomplete();
+            });
+
+            let autocomplete;
+
+            function initAutocomplete() {
+                autocomplete = new google.maps.places.Autocomplete(
+                    document.getElementById('address-shop'),
+                    {types: ['geocode']}
+                );
+
+                autocomplete.addListener('place_changed', onPlaceChanged);
+            }
+
+            function onPlaceChanged() {
+                const place = autocomplete.getPlace(); 
+                console.log(place);
+            }
+
+            google.maps.event.addDomListener(window, 'load', initAutocomplete);
+        </script>
 {% endblock %}

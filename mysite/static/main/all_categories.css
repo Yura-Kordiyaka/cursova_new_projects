@@ -8,11 +8,12 @@
     padding: 0 200px 100px;
 }
 
+
 .form-wrapper {
     padding: 20px 200px;
     font-size: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 
 }
@@ -50,9 +51,43 @@ form button {
 form button:hover {
     background-color: #20771b; /* Колір фону при наведенні */
 }
+.add-category-button,.stop-adding-category{
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--accent-color);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.add-category-button:hover{
+    background-color: #20771b;
+}
+
+.stop-adding-category:hover{
+    background-color: #c41b1b;
+}
+.add-category-form label{
+    font-size: 20px;
+    font-weight: 500;
+}
+.add-category-form input{
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+}
 .add-category-form{
     display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 300;
+    gap: 30px;
+    padding: 0 200px 100px;
+    margin-top: 50px;
 }
+
 
 .category-item {
     width: 100%;
@@ -79,15 +114,40 @@ form button:hover {
 .item-category-span {
     font-weight: 700;
 }
-.edit-category{
-    display: none;
-}
+
 .category-item a {
     color: var(--accent-color);
 }
 
 .category-item:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.edit-button-category{
+    margin-bottom: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--accent-color);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+
+}
+.edit-button-category:hover{
+    background-color: #20771b;
+}
+
+.edit-category{
+    margin-top: 15px;
+
+    display: none;
+}
+.edit-category input{
+    width: 25%;
+    padding: 10px;
+    margin: 10px 10px 10px 0;
 }
 
 .delete-category {

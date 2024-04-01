@@ -14,7 +14,6 @@
             <button type="submit">Застосувати сортування</button>
         </form>
         <button class="add-category-button" id="add-category-button">Додати категорію</button>
-
     </div>
     <div class="add-category-form">
         <form action="{% url 'add_category' %}" method="post">
@@ -91,7 +90,7 @@
         let buttonAddCategory = document.getElementById('add-category-button');
         buttonAddCategory.addEventListener('click', function () {
             if (buttonAddCategory.classList.contains('add-category-button')) {
-                document.querySelector('.add-category-form').style.display = 'block';
+                document.querySelector('.add-category-form').style.display = 'flex';
                 buttonAddCategory.innerText = 'Скасувати додавання';
                 buttonAddCategory.classList.remove('add-category-button');
                 buttonAddCategory.classList.add('stop-adding-category');
@@ -106,15 +105,20 @@
         });
         const editButtons = document.querySelectorAll('.edit-button-category');
 
-        editButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
+        editButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
                 const categoryId = button.id.split('_')[1];
                 const editForm = document.getElementById('edit_form_' + categoryId);
 
-                if (editForm.style.display === 'none') {
+                if (editForm.style.display === 'none' || editForm.style.display === '') {
                     button.textContent = 'Закінчити редагування';
+                    button.classList.remove('edit-button-category');
+                    button.classList.add('stop-adding-category');
                     editForm.style.display = 'block';
                 } else {
+                    if (!button.classList.contains('edit-button-category')) {
+                        button.classList.add('edit-button-category');
+                    }
                     button.textContent = 'Редагувати категорію';
                     editForm.style.display = 'none';
                 }

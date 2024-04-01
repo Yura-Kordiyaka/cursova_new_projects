@@ -35,7 +35,7 @@ ul {
 
 
 :root {
-    --accent-color: #165e16;
+    --accent-color: #04a904;
     --color-address-link: #757575;
     --background-color: #2F303A;
     --text-color-secondary: #212121;
@@ -64,7 +64,7 @@ ul {
 .header-link {
     color: #000000;
     font-weight: inherit;
-    font-size: 25px;
+    font-size: 20px;
     line-height: 1.14;
     letter-spacing: 0.02em;
 }
@@ -83,6 +83,12 @@ ul {
     color: var(--accent-color);
 }
 
+.exit-link:hover,
+.exit-link:focus
+{
+     transition: 0.4s;
+    color: #c91414;
+}
 .div-header-link .ul {
     display: flex;
 }

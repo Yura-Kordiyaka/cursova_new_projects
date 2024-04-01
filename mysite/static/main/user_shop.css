@@ -1,7 +1,7 @@
 .form-wrapper {
     padding: 0 200px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 
 }
@@ -22,7 +22,8 @@ form select:hover,
 form select:focus {
     border-color: #aaa;
 }
-
+.stop-adding-shop,
+.add-shop-button,
 form button {
     padding: 10px 20px;
     font-size: 16px;
@@ -33,11 +34,47 @@ form button {
     cursor: pointer; /* Зміна форми курсора на пальцевий, коли кнопка доступна для натискання */
     transition: background-color 0.3s ease; /* Анімація зміни колір фону */
 }
-
+.add-shop-button:hover,
 form button:hover {
     background-color: #20771b; /* Колір фону при наведенні */
+}
+.stop-adding-shop:hover{
+    background-color: #c41b1b;
+
+}
+
+.add-shop-form label{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.add-shop-form input{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+
 }
 
 .add-shop-form{
     display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 300;
+    gap: 30px;
+    padding: 0 200px 100px;
+    margin-top: 50px;
+}
+.main-wrapper{
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 300;
+    gap: 30px;
+    padding: 0 200px 100px;
+}
+
+.paginator{
+    margin-top: 100px;
 }
