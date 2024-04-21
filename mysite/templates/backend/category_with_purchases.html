@@ -4,10 +4,10 @@
     <link rel="stylesheet" href="/static/main/category_with_purchases.css">
 {% endblock %}
 {% block content %}
-    <div>
+    <h1 class="category-name">{{ category.name }} </h1>
+    <div class="add-purchase">
         <a href="{% url "add_purchase" %}">Додати покупку</a>
     </div>
-    <h1 class="category-name">{{ category.name }} </h1>
     <div class="form-wrapper">
         <form method="get" action="{% url 'get_product_by_category' pk=category.id %}">
             <label for="sort">Сортування:</label>
@@ -19,7 +19,7 @@
                     дорогі
                 </option>
                 <option value="date" {% if sort_param == 'date' %}selected{% endif %}>по даті додавання</option>
-               
+
             </select>
             <label for="date_filter">Час додавання:</label>
             <select name="date_filter" id="date_filter">
@@ -27,12 +27,11 @@
                 </option>
                 <option value="today" {% if date_sort == 'today' %}selected{% endif %}>За сьогодні</option>
                 <option value="month" {% if date_sort == 'month' %}selected{% endif %}>За місяць</option>
-              
+
             </select>
             <button type="submit">Застосувати сортування</button>
         </form>
-        <p class="all-price"><span>Загальна ціна продуктів:</span> {{ all_price }}</p>
-
+        <p class="all-price"><span>Загальна ціна:</span> {{ all_price }}</p>
     </div>
     <div class="main-wrapper">
 
@@ -41,52 +40,74 @@
             {% for purchase in user_purchases %}
                 <div class="item-purchase">
 
-
-                    <a href="{% url 'specific_purchase' pk=purchase.id %}"><h4>Назва
-                        : {{ purchase.name_of_product }}</h4>
-                    </a>
-                    <p>ціна {{ purchase.price|floatformat:2 }}</p>
-                    <p>придбанно в {{ purchase.shop.name }}</p>
-                    <p>адресс {{ purchase.shop.address }}</p>
-                    <p>Дата покупки {{ purchase.date_add }}</p>
-                    <a href="{% url 'delete_purchase' pk=purchase.id %}">Видалити покупку</a>
+                    <p class="item-purchase-paragraph item-purchase-span">Назва: </p>
+                    <a class="item-purchase-name"
+                       href="{% url 'specific_purchase' pk=purchase.id %}">{{ purchase.name_of_product }}</a>
+                    <p><span class="item-purchase-span">Ціна: </span>{{ purchase.price|floatformat:2 }}</p>
+                    <p><span class="item-purchase-span">Придбанно в: </span>{{ purchase.shop.name }}</p>
+                    <p><span class="item-purchase-span">Aдреса: </span> {{ purchase.shop.address }}</p>
+                    <p><span class="item-purchase-span">Дата покупки: </span> {{ purchase.date_add }}</p>
+                    <a class="delete-purchase" href="{% url 'delete_purchase' pk=purchase.id %}">Видалити покупку</a>
                 </div>
             {% endfor %}
         {% else %}
-            <h3>ви не додавали покупки для цієї категорії</h3>
+            <div class="product-not-found">
+                <p>Немає доданих покупок</p>
+            </div>
         {% endif %}
-        {% if messages %}
-            {% for message in messages %}
-                <li>
-                    {{ message }}
-                </li>
-            {% endfor %}
-        {% endif %}
+
         <div>
             {% if user_purchases.has_previous %}
-
-                <a class="pagination__link"
-                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
-
-
-                       {{ user_purchases.previous_page_number }}{% else %}?page={{ user_purchases.previous_page_number }}{% endif %}">
-                    Попередня
-                </a>
+                {% if sort_param and date_sort %}
+                    <a href="?sort={{ sort_param }}&date_filter={{ date_sort }}&page={{ user_purchases.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% elif sort_param %}
+                    <a href="?sort={{ sort_param }}&page={{ user_purchases.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% elif date_sort %}
+                    <a href="?date_filter={{ date_sort }}&page={{ user_purchases.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% else %}
+                    <a href="?page={{ user_purchases.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% endif %}
             {% endif %}
             Сторінка {{ user_purchases.number }} з {{ user_purchases.paginator.num_pages }}
             {% if user_purchases.has_next %}
-                <a class="pagination__link"
-                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
-
-
-                       {{ user_purchases.next_page_number }}{% else %}?page={{ user_purchases.next_page_number }}{% endif %}">
-                    Наступна
-                </a>
+                {% if sort_param and date_sort %}
+                    <a href="?sort={{ sort_param }}&date_filter={{ date_sort }}&page={{ user_purchases.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% elif sort_param %}
+                    <a href="?sort={{ sort_param }}&page={{ user_purchases.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% elif date_sort %}
+                    <a href="?date_filter={{ date_sort }}&page={{ user_purchases.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% else %}
+                    <a href="?page={{ user_purchases.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% endif %}
             {% endif %}
+        </div>
+        <div class="maps-title">
+            <p>Карта Покупок</p>
         </div>
         <div id="map_canvas" style="width:700px; height:500px;"></div>
     </div>
-
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>
+                            <span>{{ message }}</span>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <script>
         let users = JSON.parse('{{ user_purchases_data | escapejs }}');
         document.addEventListener("DOMContentLoaded", function () {
@@ -113,7 +134,24 @@
             }
 
             initMap();
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            // Отримуємо повідомлення
+            var messages = document.querySelector(".messages");
+
+            // Перевіряємо, чи є повідомлення
+            if (messages.innerHTML.trim() !== "") {
+                // Показуємо модальне вікно
+                modal.style.display = "block";
+            }
+
+            // Коли користувач клікає на кнопку закриття, закриваємо модальне вікно
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
         });
+
     </script>
 
 {% endblock %}

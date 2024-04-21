@@ -1,19 +1,18 @@
 {% extends 'backend/base.html' %}
 {% block url_patern %}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM&loading=async"></script>
+    <link rel="stylesheet" href="/static/main/search_in_shop.css">
 {% endblock %}
 {% block content %}
-
     <div class="form-wrapper">
         <form method="get" action="{% url 'search_in_shop' name_of_product=name_of_product %}">
             <label for="sort">Сортування:</label>
             <select name="sort" id="sort">
-                <option value="first_cheap" {% if sort_param == 'first_cheap' %}selected{% endif %}>спочатку дорожчі
+                <option value="first_cheap" {% if sort_param == 'first_cheap' %}selected{% endif %}>спочатку дешевші
                 </option>
                 <option value="expensive_first" {% if sort_param == 'expensive_first' %}selected{% endif %}>спочатку
-                    дешеві
+                    дорожчі
                 </option>
-             <option value="filter_out" {% if sort_param == 'filter_out' %}selected{% endif %}>Скинути фільтрацію</option>
             </select>
             <button type="submit">Застосувати сортування</button>
         </form>
@@ -21,38 +20,62 @@
     <div class="main-wrapper">
         {% if search_products %}
             {% for search_product in  search_products %}
-                <a href="" class="">Магазин: {{ search_product.shop.name }}</a>
-                <a class="" href="https://www.google.com/maps/search/?api=1&query={{ search_product.shop.address }}">Адрес: {{ search_product.shop.address }}</a>
-                <p class="">Назва: {{ search_product.name }}</p>
-                <p class="">Ціна: {{ search_product.price }} </p>
-                <p class="">Опис: {{ search_product.description }}</p>
+                <div class="item-product" id="product-{{ search_product.id }}">
+                    <div class="product-details">
+                        <p><span>Магазин: </span> {{ search_product.shop.name }}</p>
+                        <p>
+                            <span>Адресca: </span><a class="shop-address"
+                                                     href="https://www.google.com/maps/search/?api=1&query={{ search_product.shop.name }},{{ search_product.shop.address }}" target="_blank">
+                            {{ search_product.shop.address }}</a>
+                        </p>
+                        <p class=""><span>Назва продукту: </span> {{ search_product.name }}</p>
+                        <p class=""><span>Ціна: </span>{{ search_product.price }} </p>
+                        <p class="class-description-product"><span>Опис: </span> {{ search_product.description }}</p>
+                    </div>
+                    <div class="product-image">
+                        {% if search_product.img %}
+                            <img src="/media/{{ search_product.img }}">
+                        {% endif %}
+                    </div>
+                </div>
             {% endfor %}
         {% else %}
-            <h3>Продуктів у магазинах не знайдено</h3>
+            <div class="product-not-found">
+                <p>Продуктів у магазинах не знайдено</p>
+            </div>
         {% endif %}
+        <div class="paginator">
+            {% if search_products.has_previous %}
+                <a class="pagination__link"
+                   href="{% if sort_param %}?sort={{ sort_param }}&page=
+
+
+
+
+                       
+                       {{ search_products.previous_page_number }}{% else %}?page={{ search_products.previous_page_number }}{% endif %}">
+                    <i class="fa-solid fa-arrow-left pagination-arrow"></i>
+                </a>
+            {% endif %}
+            Сторінка {{ search_products.number }} з {{ search_products.paginator.num_pages }}
+            {% if search_products.has_next %}
+                <a class="pagination__link"
+                   href="{% if sort_param %}?sort={{ sort_param }}&page=
+
+
+
+
+                       
+                       {{ search_products.next_page_number }}{% else %}?page={{ search_products.next_page_number }}{% endif %}">
+                    <i class="fa-solid fa-arrow-right pagination-arrow"></i>
+                </a>
+            {% endif %}
+        </div>
+        <div class="maps-title">
+            <p>Карта Магазинів</p>
+        </div>
+        <div id="map_canvas" style="width:700px; height:500px;"></div>
     </div>
-    <div>
-        {% if search_products.has_previous %}
-            <a class="pagination__link"
-               href="{% if sort_param %}{{ request.get_full_path }}&page=
-
-
-                   {{ search_products.previous_page_number }}{% else %}?page={{ search_products.previous_page_number }}{% endif %}">
-                Попередня
-            </a>
-        {% endif %}
-        Сторінка {{ search_products.number }} з {{ search_products.paginator.num_pages }}
-        {% if search_products.has_next %}
-            <a class="pagination__link"
-               href="{% if sort_param %}{{ request.get_full_path }}&page=
-
-
-                   {{ search_products.next_page_number }}{% else %}?page={{ search_products.next_page_number }}{% endif %}">
-                Наступна
-            </a>
-        {% endif %}
-    </div>
-    <div id="map_canvas" style="width:700px; height:500px;"></div>
     <script>
         let users = JSON.parse('{{ search_products_data | escapejs }}');
         document.addEventListener("DOMContentLoaded", function () {
@@ -79,6 +102,7 @@
             }
 
             initMap();
+
         });
     </script>
 {% endblock %}

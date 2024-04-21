@@ -1,67 +1,95 @@
 {% extends 'backend/base.html' %}
 {% block url_patern %}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM&libraries=places&loading=async"></script>
+    <link rel="stylesheet" href="/static/main/add_purchase.css">
 {% endblock %}
 {% block content %}
-    <section class="">
-                <form action="{% url "add_purchase" %}" method="post">
-                    {% csrf_token %}
-                    <label for="username">
-                        Виберіть категорію
-                    </label>
-                    <div class="form-group">
-                        <label for="category_id" class="label">Оберіть Категорію</label>
-                        <select id="category_id" name="category_id" class="select">
-                            {% for category in categories %}
-                                <option value="{{ category.id }}">{{ category.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <label for="name_of_product">
-                        Назва покупки
-                    </label>
-                    <input type="text"
-                           id="name_of_product"
-                           name="name_of_product"
-                           minlength="3"
-                           placeholder="введіть назву продукту" required>
-                    <label for="price_of_product">
-                        Ціна за покупку:
-                    </label>
-                    <input type="number"
-                           id="price_of_product"
-                           name="price_of_product"
-                           placeholder="введіть суму яка була витратрачена на покупку" required>
-                    <label for="description">
-                        Опис Покупки
-                    </label>
-                    <textarea id="description" name="description" rows="5" cols="33">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>
+                            <span>{{ message }}</span>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="form-wrapper">
+        <form class="add-purchase-form" action="{% url "add_purchase" %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="category_id" class="label">Оберіть Категорію</label>
+                <select id="category_id" name="category_id" class="select" required>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name_of_product">
+                    Назва покупки
+                </label>
+                <input type="text"
+                       id="name_of_product"
+                       name="name_of_product"
+                       minlength="3"
+                       placeholder="введіть назву продукту" required>
+            </div>
+            <div class="form-group">
+                <label for="price_of_product">
+                    Ціна за покупку:
+                </label>
+                <input type="number"
+                       id="price_of_product"
+                       name="price_of_product"
+                       step="0.5"
+                       placeholder="введіть суму яка була витратрачена на покупку" required>
+            </div>
+            <div class="form-group">
+                <label for="description">
+                    Опис Покупки
+                </label>
+                <textarea id="description" name="description" rows="5" cols="33">
                     </textarea>
-                    <label for="username">
-                        Виберіть Магазин
-                    </label>
-                    <div class="form-group">
-                        <label for="id_shop" class="label">Оберіть магазин</label>
-                        <select id="id_shop" name="shop" class="select">
-                            {% for shop in shops %}
-                                <option value="{{ shop.id }}">{{ shop.name }} - {{ shop.address }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="wrap">
-                        <button type="submit">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-    </section>
-    <section>
-            {% if messages %}
-                {% for message in messages %}
-                    <li>
-                        {{ message }}
-                    </li>
-                {% endfor %}
-            {% endif %}
-    </section>
+            </div>
+
+            <div class="form-group">
+                <label for="id_shop" class="label">Оберіть магазин</label>
+                <select id="id_shop" name="shop" class="select" required>
+                    {% for shop in shops %}
+                        <option value="{{ shop.id }}">{{ shop.name }} - {{ shop.address }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="wrap">
+                <button type="submit">
+                    Додати покупку
+                </button>
+            </div>
+        </form>
+    </div>
+    <script>
+
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+
+        var messages = document.querySelector(".messages");
+
+
+        if (messages.innerHTML.trim() !== "") {
+
+            modal.style.display = "block";
+        }
+
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+    </script>
 {% endblock %}

@@ -1,66 +1,210 @@
 /*style.css*/
+:root{
+    --input-color:#D3BEA187;
+    --button-hover-stop-adding: #af3931;
+    --button-hover-color: #1d6c5f;
+    --light-theme-bcgc: #EAE7DC;
+    --primary-text-color: #162129;
+    --primary-nav-ref-color: #8E8D8A;
+    --hover-nav-ref-color: #E85A4F;
+    --additional-color: #2e9483;
+    --color-accent: #c4ad8e;
+    --light-violet: #AAA7DC;
+    --simple-black: #000000;
+}
+::-webkit-scrollbar {
+    width: 20px;
+    transition: 0.5s;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px var(--simple-black) ;
+    border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--additional-color);
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--button-hover-color);
+}
 body {
+    font-family: "Shantell Sans", sans-serif;
+    font-weight: 300;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: sans-serif;
-    line-height: 1.5;
-    min-height: 100vh;
-    background: #f3f3f3;
-    flex-direction: column;
+    background-color: var(--light-theme-bcgc);
     margin: 0;
 }
 
-.main {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    padding: 10px 20px;
-    transition: transform 0.2s;
-    width: 500px;
-    text-align: center;
-}
 
 h1 {
-    color: #4CAF50;
+    color: var(--additional-color);
+    margin: 20px 0;
+}
+.login-title{
+    margin:  0;
+}
+h3 {
+    color: var(--additional-color);
+    margin: 0;
+
 }
 
-label {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    text-align: left;
-    color: #555;
-    font-weight: bold;
+.container-form{
+       width: 25rem;
+    height: 27rem;
+    background-image: linear-gradient(rgba(0,0,0,0.075),rgba(0,0,0,0.075)),url("/media/form_authorization_photo/depositphotos_81256176-stock-illustration-shopping-list-flat-icon-with.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 12px 12px 45px 12px #a7a5a5;
+    margin: 2% auto;
+    border-radius: 3px;
 }
-
-
-input {
-    display: block;
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-button {
-    padding: 15px;
+.form-wrapper {
     border-radius: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    border: none;
-    color: white;
-    cursor: pointer;
-    background-color: #4CAF50;
-    width: 100%;
-    font-size: 16px;
-}
-
-.wrap {
+    background-color: rgba(246, 246, 246, 0.72);
+    padding: 60px 40px;
+    gap: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    margin-top:40px;
+}
+.login-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px 40px;
+}
+.form div{
+    text-align: left;
+}
+.form {
+    display: flex;
+    height: 100%;
+    padding: 70px 0;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+
+}
+.form-login{
+    padding: 0;
+}
+.form label{
+    display: block;
+    font-weight: 600;
+
+    font-size: 20px;
+
+}
+.form input {
+    background-color: var(--light-theme-bcgc);
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.form-wrapper span {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+
+/* Стилізація для кнопки */
+form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none; /* Відсутність границі */
+    border-radius: 5px; /* Закруглені кути */
+    background-color: var(--additional-color); /* Колір фону */
+    color: #fff; /* Колір тексту */
+    cursor: pointer; /* Зміна форми курсора на пальцевий, коли кнопка доступна для натискання */
+    transition: background-color 0.3s ease; /* Анімація зміни колір фону */
+}
+
+form button:hover {
+    background-color: var(--button-hover-color); /* Колір фону при наведенні */
+}
+.login-para{
+    font-size: 20px;
+}
+.create-account-ref{
+
+    text-decoration: none;
+    color: var(--additional-color);
+    transition: 0.4s;
+}
+.create-account-ref:hover{
+      color: var(--button-hover-color);
+      text-decoration: underline;
+}
+.ref-log-in{
+    text-decoration: none;
+     color: var(--additional-color);
+    transition: 0.4s;
+}
+.ref-log-in:hover{
+    text-decoration: underline;
+          color: var(--button-hover-color);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.close {
+    color: var(--simple-black);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--button-hover-stop-adding);
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-content li{
+    list-style-type: none;
+}
+.modal-content {
+    background-color: var(--light-theme-bcgc);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.messages{
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

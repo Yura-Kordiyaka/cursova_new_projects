@@ -52,4 +52,4 @@ def authorization_user(request):
 def log_out(request):
     if request.user.is_authenticated:
         logout(request)
-        return redirect('login_user')
+        return redirect('main')

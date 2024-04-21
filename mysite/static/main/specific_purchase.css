@@ -1,0 +1,118 @@
+.messages{
+    color: var(--additional-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+}
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 300;
+    gap: 30px;
+    padding: 0 200px 40px;
+}
+.item-purchase {
+    font-size: 17px;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 20px;
+    transition: box-shadow 0.3s ease;
+
+}
+
+.item-purchase:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.item-purchase span {
+    font-size: 20px;
+    font-weight: 700;
+}
+.title-information{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: rgba(236, 209, 188, 0.43);
+    border-radius: 10px;
+    margin-bottom: 40px;
+
+}
+.edit-purchase-form{
+    padding: 50px ;
+}
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-wrapper label {
+    display: block;
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.select,
+input[type="text"],
+input[type="number"],
+textarea
+{
+    background-color: #D3BEA187;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+}
+textarea {
+    resize: none;
+    text-align: left;
+}
+select {
+    background-color: var(--input-color);
+    width: 100%; /* Set the width to 100% to make the select element stretch */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+}
+textarea {
+    resize: none;
+}
+
+button[type="submit"] {
+    background-color: var(--additional-color);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--button-hover-color);
+}
+
+.wrap {
+    text-align: center;
+}
+
+section {
+    margin-top: 20px;
+}
+
+section li {
+    list-style-type: none;
+    color: var(--additional-color);;
+}

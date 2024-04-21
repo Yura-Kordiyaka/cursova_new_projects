@@ -6,8 +6,9 @@
 
     <link rel="stylesheet" href="/static/main/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Neucha&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+          rel="stylesheet">
     <script src="https://kit.fontawesome.com/44ddc9fabc.js" crossorigin="anonymous"></script>
 
     {% block url_patern %}
@@ -25,37 +26,53 @@
                     <div class="div-header-link">
                         <ul class="ul">
                             <li class="header-link">
-                                <a href="{% url 'user_costs' %}" class="header-link current">Мої витрати</a>
+                                <a href="{% url 'user_costs' %}"
+                                   class="header-link  {% block my_expenses %}{% endblock %}">Мої витрати</a>
                             </li>
                             <li class="header-link">
-                                <a href="{% url 'all_category' %}" class="header-link">Категорії</a>
+                                <a href="{% url 'all_category' %}"
+                                   class="header-link {% block category %}{% endblock %}">Категорії</a>
                             </li>
                             <li class="header-link">
-                                <a href="{% url 'users_shop' %}" class="header-link">Мої магазини</a>
+                                <a href="{% url 'users_shop' %}" class="header-link {% block my_shops %}{% endblock %}">Мої
+                                    магазини</a>
                             </li>
                             <li class="header-link">
-                                <a href="{% url 'desired_purchase' %}" class="header-link">Список бажаних товарів</a>
+                                <a href="{% url 'desired_purchase' %}"
+                                   class="header-link {% block my_desired_purchase %}{% endblock %}">Список бажаних
+                                    товарів</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
+
             <div class="header-address">
                 <ul class="ul">
-                    <li>
-                        <a href="{% url 'log_out' %}" class="header-link address-link exit-link"><i class="fa-solid fa-right-from-bracket"></i></a>
-                        <a href="#" class="header-link address-link">{{ request.user.username }}</a>
-                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'log_out' %}" class="header-link address-link exit-link"><i
+                                    class="fa-solid fa-right-from-bracket"></i></a>
+                            <a href="#" class="header-link address-link">{{ request.user.username }}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                        <a href="{% url 'login_user' %}" class="header-link address-link">Увійти</a>
+                        </li>
+                    {% endif %}
+
                 </ul>
             </div>
         </div>
     </div>
 </header>
+<main>
+    {% block content %}
 
-{% block content %}
 
+    {% endblock %}
+</main>
 
-{% endblock %}
 <footer class="footer">
     <div class="container">
         <div class="footer-elements">
@@ -64,7 +81,8 @@
                 <address>
                     <ul class="ul">
                         <li>
-                            <a href="https://www.google.com/maps/search/?api=1&query=м. Львів, вул. Наукова, 35а" class="footer-link gmap">м. Київ, пр-т Лесі
+                            <a href="https://www.google.com/maps/search/?api=1&query=м. Львів, вул. Наукова, 35а"
+                               class="footer-link gmap">м. Київ, пр-т Лесі
                                 Українки, 26</a>
                         </li>
                         <li>

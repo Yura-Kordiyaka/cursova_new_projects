@@ -4,19 +4,21 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM&loading=async"></script>
     <link rel="stylesheet" href="/static/main/desired_purchase.css">
 {% endblock %}
-
+{% block my_desired_purchase %}
+    current
+{% endblock %}
 {% block content %}
     <div class="form-wrapper">
-        <form>
+        <form action="#" method="get">
             <label for="sort">Сортування:</label>
             <select name="sort" id="sort">
-                <option value="cheap_first" {% if sort_param == 'cheap_first' %}selected{% endif %}>Спочатку дешеві
+                <option value="name" {% if sort_param == 'name' %}selected{% endif %}>По імені
                 </option>
-                <option value="expensive_firs" {% if sort_param == 'expensive_firs' %}selected{% endif %}>Спочатку
-                    дорогі
+                <option value="date" {% if sort_param == 'date' %}selected{% endif %}>
+                    По даті додавання
                 </option>
             </select>
-            <button type="submit">Додати</button>
+            <button type="submit">Застосувати сортування</button>
         </form>
         <button class="add-button-desired-purchase" id="add-button-desired-purchase">Додати бажану покупку</button>
     </div>
@@ -34,50 +36,69 @@
                    placeholder="введіть назву продукту" required/>
             <div class="wrap">
                 <button type="submit">
-                    Submit
+                    Додати
                 </button>
             </div>
         </form>
     </div>
     <div class="main-wrapper">
-        {% for purchase  in desired_purchase %}
-            <p>Назва: {{ purchase.name_of_product }}</p>
-            <a class="delete-desired-purchase" href="{% url 'delete_desired_purchase' pk=purchase.id %}">Видалити
-                товар</a>
-            <a class="search-in-shop" href="{% url 'search_in_shop' name_of_product=purchase.name_of_product %}">Знайти
-                у магазинах</a>
-            <hr>
-        {% endfor %}
-    </div>
-    <div>
-        {% if desired_purchase.has_previous %}
-            <a class="pagination__link"
-               href="{% if sort_param %}{{ request.get_full_path }}&page=
+        {% if desired_purchase %}
+            {% for purchase  in desired_purchase %}
+                <div class="item-desired-purchase">
+                    <p class="item-shop-paragraph"><span>Назва:</span> {{ purchase.name_of_product }}</p>
+                    <p>
+                    <p class="item-shop-paragraph"><span>Додано: </span> {{ purchase.date_add }}</p>
+                    </p>
+                    <a class="delete-desired-purchase" href="{% url 'delete_desired_purchase' pk=purchase.id %}">Видалити
+                        товар</a>
+                    <a class="search-in-shop"
+                       href="{% url 'search_in_shop' name_of_product=purchase.name_of_product %}">Знайти
+                        у магазинах</a>
+                </div>
 
-               
-                   
-                   {{ desired_purchase.previous_page_number }}{% else %}?page={{ desired_purchase.previous_page_number }}{% endif %}">
-                Попередня
-            </a>
+            {% endfor %}
+        {% else %}
+            <div class="product-not-found">
+                <p>Немає доданих бажаних покупок</p>
+            </div>
         {% endif %}
-        Сторінка {{ desired_purchase.number }} з {{ desired_purchase.paginator.num_pages }}
-        {% if categories.has_next %}
-            <a class="pagination__link"
-               href="{% if sort_param %}{{ request.get_full_path }}&page=
-
-               
-                   
-                   {{ desired_purchase.next_page_number }}{% else %}?page={{ desired_purchase.next_page_number }}{% endif %}">
-                Наступна
-            </a>
-        {% endif %}
+        <div class="paginator">
+            {% if desired_purchase.has_previous %}
+                <a class="pagination__link"
+                   href="{% if sort_param %}?sort={{ sort_param }}&page=
+                       {{ desired_purchase.previous_page_number }}{% else %}?page={{ desired_purchase.previous_page_number }}{% endif %}">
+                    <i class="fa-solid fa-arrow-left pagination-arrow"></i>
+                </a>
+            {% endif %}
+            Сторінка {{ desired_purchase.number }} з {{ desired_purchase.paginator.num_pages }}
+            {% if desired_purchase.has_next %}
+                <a class="pagination__link"
+                   href="{% if sort_param %}?sort={{ sort_param }}&page=
+                       {{ desired_purchase.next_page_number }}{% else %}?page={{ desired_purchase.next_page_number }}{% endif %}">
+                    <i class="fa-solid fa-arrow-right pagination-arrow"></i>
+                </a>
+            {% endif %}
+        </div>
     </div>
-    <div id="map_canvas" style="width:700px; height:500px;"></div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>
+                            <span>{{ message }}</span>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <script>
         let buttonAddPurchase = document.getElementById('add-button-desired-purchase');
         buttonAddPurchase.addEventListener('click', function () {
             if (buttonAddPurchase.classList.contains('add-button-desired-purchase')) {
-                document.querySelector('.add-desired-purchase').style.display = 'block';
+                document.querySelector('.add-desired-purchase').style.display = 'flex';
                 buttonAddPurchase.innerText = 'Скасувати додавання';
                 buttonAddPurchase.classList.remove('add-button-desired-purchase');
                 buttonAddPurchase.classList.add('stop-adding-purchase');
@@ -90,6 +111,21 @@
 
 
         });
-      
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        // Отримуємо повідомлення
+        var messages = document.querySelector(".messages");
+
+        // Перевіряємо, чи є повідомлення
+        if (messages.innerHTML.trim() !== "") {
+            // Показуємо модальне вікно
+            modal.style.display = "block";
+        }
+
+        // Коли користувач клікає на кнопку закриття, закриваємо модальне вікно
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
     </script>
 {% endblock %}

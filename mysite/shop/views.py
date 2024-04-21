@@ -15,11 +15,10 @@ from .utilities import search_products_in_shop, filter_products_in_shop
 
 def search_in_shop(request, name_of_product):
     search_products = search_products_in_shop(name_of_product)
-
     sort_by = request.GET.get("sort", None)
     search_products = filter_products_in_shop(search_products, sort_param=sort_by)
     page = request.GET.get("page", 1)
-    paginator = Paginator(search_products, 10)
+    paginator = Paginator(search_products, 5)
     try:
         search_products = paginator.page(page)
     except PageNotAnInteger:

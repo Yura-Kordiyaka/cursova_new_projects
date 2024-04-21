@@ -40,6 +40,8 @@ def filter_user_shops(queryset: UserShop, sort_param=None, date_sort=None):
             queryset = queryset.filter(date_add__range=(start_of_day, end_of_day))
         elif date_sort == 'month':
             queryset = queryset.filter(date_add__month=current_month)
+        else:
+            queryset = queryset.all()
 
     if sort_param is not None:
         if sort_param == 'name':

@@ -1,24 +1,71 @@
 {% extends 'backend/base.html' %}
+{% block url_patern %}
+    <link rel="stylesheet" href="/static/main/specific_purchase.css">
+{% endblock %}
 {% block content %}
-    <h1>Назва {{ user_purchase.name_of_product }}</h1>
-    <h1>ціна {{ user_purchase.price }}</h1>
-    <h1>де була здійснена покупка {{ user_purchase.shop.name }} на {{ user_purchase.shop.address }}</h1>
+    <div class="main-wrapper">
+        <div class="item-purchase">
+            <p><span>Назва:</span> {{ user_purchase.name_of_product }}</p>
+            <p><span>Ціна:</span> {{ user_purchase.price }}</p>
+            <p><span>Де була здійснена покупка: </span>{{ user_purchase.shop.name }} на {{ user_purchase.shop.address }}
+            </p>
+            {% if user_purchase.description %}
+                  <p><span>Опис: </span>{{ user_purchase.description }}
+            </p>
+            {% endif %}
+            <p></p>
+        </div>
+    </div>
+    <div class="title-information"> 
+        <h1>Редагування покупки</h1>
+    </div>
 
-     <form method="post" action="{% url 'edit_purchase' pk=user_purchase.id %}">
-        {% csrf_token %}
-        <label for="name_of_product">Назва продукту:</label>
-        <input type="text" id="name_of_product" name="name_of_product" value="{{ user_purchase.name_of_product }}">
+    <div class="form-wrapper">
+        <form class="edit-purchase-form" method="post" action="{% url 'edit_purchase' pk=user_purchase.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name_of_product">Назва продукту:</label>
+                <input type="text" id="name_of_product" name="name_of_product" minlength="4" required
+                       value="{{ user_purchase.name_of_product }}">
 
-        <label for="price">Ціна:</label>
-        <input type="text" id="price" name="price" value="{{ user_purchase.price }}">
+            </div>
+        
+            {% if  user_purchase.description %}
+            <div class="form-group">
+                <label for="description">Опис продукту:</label>
+                <textarea  id="description" name="description" minlength="4" required rows="5" cols="33"
+                       >{{ user_purchase.description }}
+                </textarea>
 
-        <label for="shop">Магазин:</label>
-        <select id="shop" name="shop">
-            {% for shop in shops %}
-                <option value="{{ shop.id }}" {% if shop.id == user_purchase.shop.id %}selected{% endif %}>{{ shop.name }}</option>
-            {% endfor %}
-        </select>
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="price">Ціна:</label>
+                <input type="text" id="price" name="price" value="{{ user_purchase.price }}" minlength="3"  required>
+            </div>
 
-        <button type="submit">Зберегти зміни</button>
-    </form>
+            <div class="form-group">
+                <label for="shop">Магазин:</label>
+                <select id="shop" name="shop" required>
+                    {% for shop in shops %}
+                        <option value="{{ shop.id }}"
+                                {% if shop.id == user_purchase.shop.id %}selected{% endif %}>{{ shop.name }}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Категорія:</label>
+                <select id="category" name="category" required>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}"
+                                {% if category.id == user_purchase.category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Зберегти зміни</button>
+        </form>
+    </div>
 {% endblock %}

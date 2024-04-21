@@ -1,7 +1,11 @@
 {% extends 'backend/base.html' %}
+
 {% block url_patern %}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA48fxJ82oBUqhCYIYd2RG4-uHXh7jyRM&libraries=places&loading=async"></script>
     <link rel="stylesheet" href="/static/main/user_shop.css">
+{% endblock %}
+{% block my_shops %}
+    current
 {% endblock %}
 {% block content %}
     <div class="form-wrapper">
@@ -14,17 +18,17 @@
             </select>
             <label for="date_filter">Час додавання:</label>
             <select name="date_filter" id="date_filter">
-                <option value="whole_period" {% if sort_param == 'whole_period' %}selected{% endif %}>За весь період
+                <option value="whole_period" {% if date_sort == 'whole_period' %}selected{% endif %}>За весь період
                 </option>
-                <option value="today" {% if sort_param == 'today' %}selected{% endif %}>За сьогодні</option>
-                <option value="month" {% if sort_param == 'month' %}selected{% endif %}>За місяць</option>
+                <option value="today" {% if date_sort == 'today' %}selected{% endif %}>За сьогодні</option>
+                <option value="month" {% if date_sort == 'month' %}selected{% endif %}>За місяць</option>
             </select>
             <button type="submit">Застосувати сортування</button>
         </form>
         <button class="add-shop-button" id="add-shop-button">Додати магазин</button>
     </div>
     <div class="add-shop-form">
-        <form method="post" action="{% url "add_user_shop" %}">
+        <form method="post" action="{% url "add_user_shop" %}" id="MyForm">
             {% csrf_token %}
             <label for="name-shop">
                 Назва магазину
@@ -34,42 +38,80 @@
                 Адреса магазину
             </label>
             <input name="address_shop" id="address-shop" placeholder="" type="text" required minlength="5">
-            <button type="submit">Додати магазин</button>
+            <button сlass="add-user-shop" type="submit">Додати магазин</button>
         </form>
     </div>
     <div class="main-wrapper">
-        {% for shop in user_shops %}
-            <div class="item-purchase">
-                <p class="item-purchase-paragraph item-purchase-span">Назва: {{ shop.name }} </p>
-                <a class="item-purchase-paragraph item-purchase-span">Адесса: {{ shop.address }}</a>
-                <p>Додано в {{ shop.date_add }}</p>
-                <a class="" href="{% url "delete_user_shop" pk=shop.id %}">Видалити магазин</a>
+        {% if user_shops %}
+            {% for shop in user_shops %}
+                <div class="item-shop">
+                    <p class="item-shop-paragraph"><span>Назва:</span> {{ shop.name }} </p>
+                    <p class="item-shop-paragraph"><span>Адресса:</span> {{ shop.address }}</p>
+                    <p class="item-shop-paragraph"><span>Додано: </span> {{ shop.date_add }}</p>
+                    <a class="delete-shop" href="{% url "delete_user_shop" pk=shop.id %}">Видалити магазин</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="product-not-found">
+                <p>Немає доданих магазинів</p>
             </div>
-        {% endfor %}
+        {% endif %}
         <div class="paginator">
             {% if user_shops.has_previous %}
-                <a class="pagination__link"
-                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
-
-
-                           
-                           
-                       {{ user_shops.previous_page_number }}{% else %}?page={{ user_shops.previous_page_number }}{% endif %}">
-                    Попередня
+                {% if sort_param and date_sort %}
+                    <a href="?sort={{ sort_param }}&date_filter={{ date_sort }}&page={{ user_shops.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% elif sort_param %}
+                    <a href="?sort={{ sort_param }}&page={{ user_shops.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% elif date_sort %}
+                    <a href="?date_filter={{ date_sort }}&page={{ user_shops.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% else %}
+                    <a href="?page={{ user_shops.previous_page_number }}"><i
+                            class="fa-solid fa-arrow-left pagination-arrow"></i></a>
+                {% endif %}
                 </a>
             {% endif %}
             Сторінка {{ user_shops.number }} з {{ user_shops.paginator.num_pages }}
             {% if user_shops.has_next %}
-                <a class="pagination__link"
-                   href="{% if sort_param or date_sort %}{{ request.get_full_path }}&page=
-                       {{ user_shops.next_page_number }}{% else %}?page={{ user_shops.next_page_number }}{% endif %}">
-                    Наступна
-                </a>
+                {% if sort_param and date_sort %}
+                    <a href="?sort={{ sort_param }}&date_filter={{ date_sort }}&page={{ user_shops.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% elif sort_param %}
+                    <a href="?sort={{ sort_param }}&page={{ user_shops.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% elif date_sort %}
+                    <a href="?date_filter={{ date_sort }}&page={{ user_shops.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% else %}
+                    <a href="?page={{ user_shops.next_page_number }}"><i
+                            class="fa-solid fa-arrow-right pagination-arrow"></i></a>
+                {% endif %}
             {% endif %}
         </div>
+        <div class="maps-title">
+            <p>Карта Магазинів</p>
+        </div>
+        <div id="map_canvas" style="width:700px; height:500px;"></div>
     </div>
-        <script>
 
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>
+                            <span>{{ message }}</span>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
             let buttonAddShop = document.getElementById('add-shop-button');
             buttonAddShop.addEventListener('click', function () {
                 if (buttonAddShop.classList.contains('add-shop-button')) {
@@ -88,22 +130,72 @@
                 initAutocomplete();
             });
 
+
             let autocomplete;
 
             function initAutocomplete() {
                 autocomplete = new google.maps.places.Autocomplete(
                     document.getElementById('address-shop'),
-                    {types: ['geocode']}
+                    {
+                        types: ['geocode'],
+                        strictBounds: true
+                    }
                 );
 
-                autocomplete.addListener('place_changed', onPlaceChanged);
-            }
 
-            function onPlaceChanged() {
-                const place = autocomplete.getPlace(); 
-                console.log(place);
             }
 
             google.maps.event.addDomListener(window, 'load', initAutocomplete);
-        </script>
+
+            document.getElementById('MyForm').addEventListener('submit', function (event) {
+                const place = autocomplete.getPlace();
+                
+                if (!place || !place.geometry) {
+                    event.preventDefault();
+                    alert('Будь ласка, оберіть адресу зі списку підказок.');
+                }
+            });
+            // Отримуємо посилання на модальне вікно та кнопку закриття
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            // Отримуємо повідомлення
+            var messages = document.querySelector(".messages");
+
+            // Перевіряємо, чи є повідомлення
+            if (messages.innerHTML.trim() !== "") {
+                // Показуємо модальне вікно
+                modal.style.display = "block";
+            }
+
+            // Коли користувач клікає на кнопку закриття, закриваємо модальне вікно
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+
+            let shops = JSON.parse('{{ shop_query_set_data | escapejs }}');
+
+            let map;
+
+            async function initMap() {
+                const {Map} = await google.maps.importLibrary("maps");
+                map = new Map(document.getElementById("map_canvas"), {
+                    center: {lat: 49.8721530000, lng: 24.0428920000},
+                    zoom: 11,
+                });
+
+                shops.forEach(shop => {
+                    let position = {lat: Number(shop.latitude), lng: Number(shop.longitude)};
+                    new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        title: shop.name
+                    });
+                });
+            }
+
+            initMap();
+        });
+    </script>
 {% endblock %}

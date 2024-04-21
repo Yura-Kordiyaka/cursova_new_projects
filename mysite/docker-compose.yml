@@ -2,7 +2,6 @@ version: '3'
 
 services:
   nginx:
-
     image: nginx:1.21-alpine
     build: ./docker/nginx
     volumes:

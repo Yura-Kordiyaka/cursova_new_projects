@@ -8,15 +8,39 @@
     padding: 0 200px 100px;
 }
 .category-name{
+    margin-top: -10px;
     text-align: center;
     font-size: 50px;
     font-weight: 700;
 }
+.add-purchase{
+    margin-top: 10px;
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+.add-purchase a {
+     padding: 10px 20px;
+    font-size: 16px;
+    border: none; /* Відсутність границі */
+    border-radius: 5px; /* Закруглені кути */
+    background-color: var(--additional-color); /* Колір фону */
+    color: #fff; /* Колір тексту */
+    cursor: pointer; /* Зміна форми курсора на пальцевий, коли кнопка доступна для натискання */
+    transition: background-color 0.3s ease; /* Анімація зміни колір фону */
+}
+.add-purchase a:hover{
+       background-color: var(--button-hover-color);
+}
+
 .form-wrapper {
-    padding: 0 200px;
-    font-size: 20px;
+    padding: 20px 100px;
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
+    justify-content: center;
     align-items: center;
 
 }
@@ -45,14 +69,14 @@ form button {
     font-size: 16px;
     border: none; /* Відсутність границі */
     border-radius: 5px; /* Закруглені кути */
-    background-color: var(--accent-color); /* Колір фону */
+    background-color: var(--button-hover-color); /* Колір фону */
     color: #fff; /* Колір тексту */
     cursor: pointer; /* Зміна форми курсора на пальцевий, коли кнопка доступна для натискання */
     transition: background-color 0.3s ease; /* Анімація зміни колір фону */
 }
 
 form button:hover {
-    background-color: #20771b; /* Колір фону при наведенні */
+    background-color: var(--button-hover-color); /* Колір фону при наведенні */
 }
 
 
@@ -82,9 +106,80 @@ form button:hover {
 }
 
 .item-purchase a {
-    color: var(--accent-color);
+    color: var(--additional-color);
 }
 
 .item-purchase:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.delete-purchase {
+    transition: font-size 0.3s ease;
+}
+
+.delete-purchase:hover,
+.delete-purchase:focus {
+    font-size: 18px;
+    color: var(--button-hover-color);
+    font-weight: 500;
+}
+
+.modal {
+    display: none; /* Початково ховаємо модальне вікно */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); /* Прозорий чорний колір тла */
+}
+.close {
+    color: var(--simple-black);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+       transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+       color: var(--button-hover-stop-adding);
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-content li{
+    list-style-type: none;
+}
+.modal-content {
+    background-color: var(--light-theme-bcgc);
+    margin: 15% auto; /* Центруємо вікно по вертикалі і горизонталі */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.messages{
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+}
+.pagination-arrow{
+    transition: 0.3s;
+    color: var(--simple-black);
+}
+.pagination-arrow:focus,
+.pagination-arrow:hover
+{
+    color: var(--additional-color);
+}
+.maps-title{
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: -20px;
+}
+.product-not-found{
+    font-weight: 700;
+    font-size: 25px;
 }

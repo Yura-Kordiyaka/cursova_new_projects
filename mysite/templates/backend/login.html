@@ -5,48 +5,80 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/static/authorization/form_authorization.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+          rel="stylesheet">
 </head>
 <body>
-<div class="main">
-    <h1>Вхід в систему</h1>
-    <h3>Введіть свої данні</h3>
-    <form action="{% url "login_user" %}" method="post">
+<div class="form-wrapper container-form login-wrapper">
+    <h1 class="login-title">Вхід в систему</h1>
+    <form class="form form-login" action="{% url "login_user" %}" method="post">
         {% csrf_token %}
-        <label for="username">
-            Username:
-        </label>
-        <input type="text"
-               id="username"
-               name="username"
-               placeholder="Enter your Username" required>
 
-        <label for="password">
-            Password:
-        </label>
-        <input type="password"
-               id="password"
-               name="password"
-               placeholder="Enter your Password" required>
-
-        <div class="wrap">
-            <button type="submit">
-                Submit
-            </button>
+        <div>
+            {#            <label for="username">#}
+            {#                Username:#}
+            {#            </label>#}
+            <input type="text"
+                   id="username"
+                   name="username"
+                   placeholder="Введіть логін" required>
         </div>
+
+        <div>
+            {#            <label for="password">#}
+            {#                Password:#}
+            {#            </label>#}
+            <input type="password"
+                   id="password"
+                   name="password"
+                   placeholder="Введіть пароль" required>
+        </div>
+
+        <button type="submit">
+            Submit
+        </button>
     </form>
-    {% if messages %}
-        {% for message in messages %}
-            <li class="{{ message.tags }}">
-                {{ message }}
-            </li>
-        {% endfor %}
-    {% endif %}
-    <p>Not registered?
-        <a href="{% url "authorization" %}"
-           style="text-decoration: none;">
-            Create an account
+    <p class="login-para">Не зареєстровані?
+        <a class="create-account-ref" href="{% url "authorization" %}"
+        >
+            Створити акаунт
         </a>
     </p>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>
+                            <span>{{ message }}</span>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+      var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+
+        var messages = document.querySelector(".messages");
+
+
+        if (messages.innerHTML.trim() !== "") {
+            // Показуємо модальне вікно
+            modal.style.display = "block";
+        }
+
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+</script>
+
 </body>
 </html>
