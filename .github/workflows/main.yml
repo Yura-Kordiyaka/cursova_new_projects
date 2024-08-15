@@ -37,16 +37,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo systemctl start docker
-          sudo systemctl enable docker
-
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get install -y docker-compose
+      - name: Install docker
+        uses: papodaca/install-docker-action@main
 
       - name: Create Docker container
         run: |
