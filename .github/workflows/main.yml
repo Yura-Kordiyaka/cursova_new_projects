@@ -39,5 +39,5 @@ jobs:
 
       - name: Create Docker container
         run: |
-          cd app
+          cd mysite
           docker-compose up -d
